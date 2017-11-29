@@ -1,0 +1,11 @@
+{% extends 'parature/base.html' %}
+
+{% block content %}
+    <div class="ticket">
+        <div class="ticketid">{{ ticket.ticketid }}</div>
+        <div class="date-created">{{ ticket.datecreated }}</div>
+        <div class="date-updated">{{ ticket.dateupdated }}</div>
+        <div class="summary">{{ ticket.summary }}</div>
+        <div class="details">{{ ticket.details }}</div>
+    </div>
+{% endblock %}

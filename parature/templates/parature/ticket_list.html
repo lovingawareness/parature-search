@@ -1,0 +1,14 @@
+{% extends 'parature/base.html' %}
+
+{% block content %}
+    {% for ticket in tickets %}
+    <div class="ticket">
+        <div class="ticketid">
+            <a href="{% url 'ticket_detail' pk=ticket.pk %}">{{ ticket.ticketid }}</a>
+        </div>
+        <div class="date-created">{{ ticket.datecreated }}</div>
+        <div class="date-updated">{{ ticket.dateupdated }}</div>
+        <div class="summary">{{ ticket.summary }}</div>
+    </div>
+    {% endfor %}
+{% endblock %}

@@ -115,6 +115,9 @@ class Customer(models.Model):
         managed = False
         db_table = 'customer'
 
+    def __str__(self):
+        return self.first_name + ' ' + self.last_name + ' <' + self.email + '>'
+
 
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
@@ -209,6 +212,11 @@ class TicketDetails(models.Model):
     class Meta:
         managed = False
         db_table = 'ticket_details'
+        verbose_name = 'Ticket Details'
+        verbose_name_plural = 'Tickets Details'
+
+    def __str__(self):
+        return 'Ticket ID ' + str(self.ticketid)
 
 
 class TicketHistory(models.Model):
@@ -224,3 +232,7 @@ class TicketHistory(models.Model):
     class Meta:
         managed = False
         db_table = 'ticket_history'
+        verbose_name = 'Ticket History Item'
+    
+    def __str__(self):
+        return self.action_name + ' on Ticket ID ' + str(self.ticket.ticketid)
