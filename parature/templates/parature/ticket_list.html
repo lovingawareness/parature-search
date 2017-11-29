@@ -1,14 +1,21 @@
 {% extends 'parature/base.html' %}
 
 {% block content %}
+    {% if query %}
+    <div class="query">The results from your search query of '{{ query }}'</div>
+    {% endif %}
+    <ol>
     {% for ticket in tickets %}
-    <div class="ticket">
-        <div class="ticketid">
-            <a href="{% url 'ticket_detail' pk=ticket.pk %}">{{ ticket.ticketid }}</a>
+    <li>
+        <div class="ticket">
+            <div class="ticketid">
+                Ticket ID: <a href="{% url 'ticket_detail' pk=ticket.pk %}">{{ ticket.ticketid }}</a>
+            </div>
+            <div class="date-created">Date Created: {{ ticket.datecreated }}</div>
+            <div class="date-updated">Date Updated: {{ ticket.dateupdated }}</div>
+            <div class="summary">Summary: {{ ticket.summary }}</div>
         </div>
-        <div class="date-created">{{ ticket.datecreated }}</div>
-        <div class="date-updated">{{ ticket.dateupdated }}</div>
-        <div class="summary">{{ ticket.summary }}</div>
-    </div>
+    </li>
     {% endfor %}
+    </ol>
 {% endblock %}
