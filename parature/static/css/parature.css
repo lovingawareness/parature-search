@@ -1,6 +1,14 @@
+body {
+    font-family: 'Ubuntu Mono', sans-serif;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Rubik';
+}
+
 h1 a {
     color: #FCA205;
-    font-family: 'Lobster';
+    font-family: 'Rubik';
 }
 
 body {
@@ -21,10 +29,7 @@ body {
 
 .content {
     margin-left: 40px;
-}
-
-h1, h2, h3, h4 {
-    font-family: 'Lobster', cursive;
+    margin-right: 40px;
 }
 
 .date-created, .date-updated {
@@ -38,11 +43,22 @@ h1, h2, h3, h4 {
     margin-right: 20px;
 }
 
-.ticket {
-    margin-bottom: 70px;
-}
-
 .ticket h1 a, .ticket h1 a:visited {
     color: #000000;
 }
 
+input[type=text] {
+    height: 50px !important;
+    font-size: 30pt !important;
+    width: 50% !important;
+}
+
+button {
+    height: 50px;
+    width: 10%;
+}
+
+pre {
+    white-space: pre-line;
+    word-break: keep-all;
+}

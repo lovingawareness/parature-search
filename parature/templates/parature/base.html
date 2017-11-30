@@ -3,12 +3,16 @@
     <head>
         <title>Parature Ticket Search</title>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="{% static 'css/parature.css' %}">
-        <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Rubik|Ubuntu+Mono" rel="stylesheet">
         <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
         <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#results').DataTable();
+            });
+        </script>
     </head>
     <body>
         <div class="page-header">
@@ -16,7 +20,7 @@
                 <a href="/">Parature Ticket Search</a>
             </h1>
         </div>
-        <div class="content container">
+        <div class="content">
             <div class="row">
                 <div class="col-md-12">
                 {% block content %}

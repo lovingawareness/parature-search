@@ -1,0 +1,42 @@
+{% extends 'parature/base.html' %}
+
+{% block content %}
+    <form action="/" method="get" class="form-inline">
+        <input type="text" name="q"{% if query %} value="{{ query }}"{% endif %} placeholder="Search query" class="form-control" id="searchInput">
+        <button type="submit" class="btn btn-default">Search</button>
+    </form>
+    {% if query %}
+    <h1>The results from your search query of '{{ query }}' ({{ tickets|length }} tickets matched):</h1>
+    <table id="results">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th>Summary</th>
+                <th>Customer</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>ID</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th>Summary</th>
+                <th>Customer</th>
+            </tr>
+        </tfoot>
+        <tbody>
+            {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket.ticketid }}</td>
+                <td>{{ ticket.datecreated }}</td>
+                <td>{{ ticket.dateupdated }}</td>
+                <td><a href="{% url 'ticket_detail' pk=ticket.pk %}">{{ ticket.summary }}</a></td>
+                <td>{{ ticket.customerid.first_name }} {{ticket.customerid.last_name }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+{% endblock %}
