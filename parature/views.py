@@ -2,12 +2,14 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .models import TicketDetails, TicketHistory
 
+def index(request):
+    return HttpResponse("You have reached the index.")
 
 def ticket_detail(request, pk):
     ticket = get_object_or_404(TicketDetails, pk=pk)
     return render(request, 'parature/ticket_detail.html', {'ticket': ticket})
 
-def index(request):
+def ticket_search(request):
     if 'q' in request.GET and request.GET['q']:
         q = request.GET['q']
         tickets = TicketDetails.objects.filter(details__contains=q).order_by('-datecreated')
