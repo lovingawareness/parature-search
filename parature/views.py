@@ -11,7 +11,8 @@ def ticket_detail(request, pk):
 
 def customer_detail(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
-    return render(request, 'parature/customer_detail.html', {'customer': customer})
+    tickets = customer.ticketdetails_set.all()
+    return render(request, 'parature/customer_detail.html', {'customer': customer, 'tickets': tickets})
 
 def ticket_search(request):
     if 'q' in request.GET and request.GET['q']:

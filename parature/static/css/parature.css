@@ -47,7 +47,7 @@ body {
     color: #000000;
 }
 
-input[type=text] {
+form#search input[type=text] {
     height: 50px !important;
     font-size: 30pt !important;
     width: 50% !important;
@@ -61,4 +61,13 @@ button {
 pre {
     white-space: pre-line;
     word-break: keep-all;
+}
+
+div.customer div.input-group {
+    float: left !important;
+}
+
+div.customer-tickets {
+    clear: both;
+    padding-top: 30px;
 }

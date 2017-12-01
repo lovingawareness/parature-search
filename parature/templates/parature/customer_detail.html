@@ -2,7 +2,69 @@
 {% load jsonify %}
 
 {% block content %}
-<div class="customer">
-    <pre>{{ customer|jsonify }}</pre>
-</div>
+    <div class="customer">
+        <h1>Customer:</h1>
+        <div class="input-group col-md-4">
+              <span class="input-group-addon" id="sizing-addon2">Name</span>
+              <input type="text" class="form-control" value="{{ customer.first_name }} {{ customer.last_name }}" aria-describedby="sizing-addon2" readonly="readonly">
+        </div>
+        <div class="input-group col-md-4">
+              <span class="input-group-addon" id="sizing-addon2">SLA</span>
+              <input type="text" class="form-control" value="{{ customer.service_level_agreement }}" aria-describedby="sizing-addon2" readonly="readonly">
+        </div>
+        <div class="input-group col-md-4">
+              <span class="input-group-addon" id="sizing-addon2">Email</span>
+              <input type="text" class="form-control" value="{{ customer.email }}" aria-describedby="sizing-addon2" readonly="readonly">
+        </div>
+        <div class="input-group col-md-4">
+              <span class="input-group-addon" id="sizing-addon2">Department</span>
+              <input type="text" class="form-control" value="{{ customer.department }}" aria-describedby="sizing-addon2" readonly="readonly">
+        </div>
+        <div class="input-group col-md-4">
+              <span class="input-group-addon" id="sizing-addon2">Title</span>
+              <input type="text" class="form-control" value="{{ customer.title }}" aria-describedby="sizing-addon2" readonly="readonly">
+        </div>
+        <div class="input-group col-md-4">
+              <span class="input-group-addon" id="sizing-addon2">NetID</span>
+              <input type="text" class="form-control" value="{{ customer.netid }}" aria-describedby="sizing-addon2" readonly="readonly">
+        </div>
+        <div class="input-group col-md-4">
+              <span class="input-group-addon" id="sizing-addon2">Building</span>
+              <input type="text" class="form-control" value="{{ customer.building }}" aria-describedby="sizing-addon2" readonly="readonly">
+        </div>
+    </div>
+    <div class="customer-tickets">
+        <h1>Tickets:</h2>
+        <table id="tickets">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Created</th>
+                    <th>Updated</th>
+                    <th>Summary</th>
+                    <th>Assigned To</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>ID</th>
+                    <th>Created</th>
+                    <th>Updated</th>
+                    <th>Summary</th>
+                    <th>Assigned To</th>
+                </tr>
+            </tfoot>
+            <tbody>
+                {% for ticket in tickets %}
+                <tr>
+                    <td>{{ ticket.ticketid }}</td>
+                    <td>{{ ticket.datecreated }}</td>
+                    <td>{{ ticket.dateupdated }}</td>
+                    <td><a href="{% url 'ticket_detail' pk=ticket.pk %}">{{ ticket.summary }}</a></td>
+                    <td>{{ ticket.assignedto }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
