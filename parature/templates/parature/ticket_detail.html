@@ -2,29 +2,45 @@
 
 {% block content %}
     <div class="ticket">
-        <div class="panel panel-default">
-            <div class="panel-heading">Ticket ID</div>
-            <div class="panel-body"><a href="https://s3.parature.com/link/desk/5525/5563/Ticket/{{ ticket.ticketid }}" target="_blank">Parature Ticket Link - {{ ticket.ticketid }} (opens in new tab)</a></div>
+        <div>
+            <h3>Customer Info</h3>
+            <ul>
+                <li>Name: <a href="{% url 'customer_detail' pk=ticket.customerid.pk %}" target="_blank">{{ ticket.customerid.last_name }}, {{ ticket.customerid.first_name }} (opens in new tab)</a></li>
+                <li>NetID: {{ ticket.customerid.netid }}</li>
+                <li>Email: {{ ticket.customerid.email }}</li>
+                <li>Department: {{ ticket.customerid.department }}</li>
+                <li>Title: {{ ticket.customerid.title }}</li>
+                <li>Find Group: {{ ticket.customerid.find_group }}</li>
+                <li>SLA: {{ ticket.customerid.service_level_agreement }}</li>
+            </ul>
         </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">Date Created</div>
-            <div class="panel-body">{{ ticket.datecreated }}</div>
+        <div>
+            <h3>Ticket Details</h3>
+            <ul>
+                <li>Ticket ID: <a href="https://s3.parature.com/link/desk/5525/5563/Ticket/{{ ticket.ticketid }}" target="_blank">Parature Ticket Link - {{ ticket.ticketid }} (opens in new tab)</a></li>
+                <li>Date created: {{ ticket.datecreated }}</li>
+                <li>Date updated: {{ ticket.dateupdated }}</li>
+                <li>Summary: {{ ticket.summary }}</li>
+                <li>Details: <br /><textarea cols="100" rows="10" wrap="hard">{{ ticket.details|safe }}</textarea></li>
+                <li>Solution: {{ ticket.solution|safe }}</li>
+            </ul>
         </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">Date Updated</div>
-            <div class="panel-body">{{ ticket.dateupdated }}</div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">Summary</div>
-            <div class="panel-body">{{ ticket.summary }}</div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">Details</div>
-            <div class="panel-body"><pre>{{ ticket.details|safe }}</pre></div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">Solution</div>
-            <div class="panel-body"><pre>{{ ticket.solution|safe }}</pre></div>
+        <div>
+            <h3>Ticket Comments</h3>
+            <ol>
+        {% for history_item in ticket.tickethistory_set.all %}
+        <li>
+        <ul>
+            <li>Action date: {{ history_item.action_date }}</li>
+            <li>Action name: {{ history_item.action_name }}</li>
+            <li>Assigned to CSR: {{ history_item.assigned_to_csr }}</li>
+            <li>Performed by CSR: {{ history_item.performed_by_csr }}</li>
+            <li>Time spent (hours): {{ history_item.time_spent }}</li>
+            <li>Comments: <br /><textarea cols="100" rows="5" wrap="hard">{{ history_item.comments|safe }}</textarea></li>
+        </ul>
+        </li>
+        {% endfor %}
+            </ol>
         </div>
     </div>
 {% endblock %}
