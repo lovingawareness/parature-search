@@ -19,4 +19,4 @@ These scripts process the CSV data exports from Parature ticketing system, for c
 
 ## PostgreSQL Database work - Copy to public schema, change data types, create relations
 
-'./clean_imported_tables.sh`
+`./clean_imported_tables.sh`
