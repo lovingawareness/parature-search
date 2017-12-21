@@ -1,5 +1,5 @@
 FOLDER=compiled
-DATESTRING=20171121
+DATESTRING=20171214
 # Copy the customer file from the current folder to the compiled folder
 cp current/customer_$DATESTRING.csv $FOLDER/
 # Remove BOM
@@ -13,7 +13,8 @@ tail -c +4 historical/ticket_details_20141231-20140101.csv > historical/noBOM/ti
 tail -c +4 historical/ticket_details_20151231-20150101.csv > historical/noBOM/ticket_details_20151231-20150101-noBOM.csv
 tail -c +4 historical/ticket_details_20161231-20160101.csv > historical/noBOM/ticket_details_20161231-20160101-noBOM.csv
 echo Processing the historical ticket history files.
-tail -c +4 historical/ticket_history_20121231-20000101.csv > historical/noBOM/ticket_history_20121231-20000101-noBOM.csv
+tail -c +4 historical/ticket_history_20111231-20000101.csv > historical/noBOM/ticket_history_20111231-20000101-noBOM.csv
+tail -c +4 historical/ticket_history_20121231-20120101.csv > historical/noBOM/ticket_history_20121231-20120101-noBOM.csv
 tail -c +4 historical/ticket_history_20131231-20130101.csv > historical/noBOM/ticket_history_20131231-20130101-noBOM.csv
 tail -c +4 historical/ticket_history_20141231-20140101.csv > historical/noBOM/ticket_history_20141231-20140101-noBOM.csv
 tail -c +4 historical/ticket_history_20151231-20150101.csv > historical/noBOM/ticket_history_20151231-20150101-noBOM.csv

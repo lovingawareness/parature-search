@@ -1,9 +1,12 @@
 #!/usr/bin/python
 import glob
 import unicodecsv as csv
+import sys
 
-details_csv_filenames = glob.glob('historical/noBOM/ticket_details*.csv') + glob.glob('current/noBOM/ticket_details*.csv')
-history_csv_filenames = glob.glob('historical/noBOM/ticket_history*.csv') + glob.glob('current/noBOM/ticket_history*.csv')
+DATESTRING = sys.argv[1]
+
+details_csv_filenames = glob.glob('historical/noBOM/ticket_details*.csv') + glob.glob('current/noBOM/ticket_details_{0}*.csv'.format(DATESTRING))
+history_csv_filenames = glob.glob('historical/noBOM/ticket_history*.csv') + glob.glob('current/noBOM/ticket_history_{0}*.csv'.format(DATESTRING))
 
 details = []
 history = []
@@ -17,13 +20,13 @@ for history_csv_filename in history_csv_filenames:
         history += list(csv.DictReader(f))
 
 print "Writing out ticket_details"
-with open('compiled/ticket_details_20171121-noBOM.csv', 'wb') as f:
+with open('compiled/ticket_details_{0}-noBOM.csv'.format(DATESTRING), 'wb') as f:
     fieldnames = sorted(details[0].keys())
     dict_writer = csv.DictWriter(f, fieldnames=fieldnames)
     dict_writer.writeheader()
     dict_writer.writerows(details)
 print "Writing out ticket_history"
-with open('compiled/ticket_history_20171121-noBOM.csv', 'wb') as f:
+with open('compiled/ticket_history_{0}-noBOM.csv'.format(DATESTRING), 'wb') as f:
     fieldnames = sorted(history[0].keys())
     dict_writer = csv.DictWriter(f, fieldnames=fieldnames)
     dict_writer.writeheader()
