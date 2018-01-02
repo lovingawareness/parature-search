@@ -1,0 +1,13 @@
+[Unit]
+Description=gunicorn daemon for Parature Ticket Search Django app
+After=network.target
+
+[Service]
+User=nick
+Group=www-data
+WorkingDirectory=/home/nick/Documents/Projects/parature_search
+EnvironmentFile=/home/nick/Documents/Projects/parature_search/.secrets
+ExecStart=/home/nick/Documents/Projects/parature_search/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/home/nick/Documents/Projects/parature_search/parature_search.sock mysite.wsgi:application
+
+[Install]
+WantedBy=multi-user.target

@@ -1,7 +1,7 @@
 {% load staticfiles %}
 <html>
     <head>
-        <title>Parature Ticket Search</title>
+        <title>{% block title %}{% endblock %}</title>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="{% static 'css/parature.css' %}">
         <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
@@ -15,7 +15,8 @@
         <script type="text/javascript">
             $(document).ready(function() {
                 $('#tickets').DataTable( {
-                    "order": [[ 0, "desc" ]]
+                    "order": [[ 0, "desc" ]],
+                    "lengthMenu": [[-1, 50], ["All", 50]]
                 } );
                 $('#customers').DataTable( {
                     "order": [[ 0, "desc" ]]
