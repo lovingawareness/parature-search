@@ -40,7 +40,6 @@
                 <tr>
                     <th>ID</th>
                     <th>Created</th>
-                    <th>Updated</th>
                     <th>Summary</th>
                     <th>Assigned To</th>
                 </tr>
@@ -49,7 +48,6 @@
                 <tr>
                     <th>ID</th>
                     <th>Created</th>
-                    <th>Updated</th>
                     <th>Summary</th>
                     <th>Assigned To</th>
                 </tr>
@@ -59,7 +57,6 @@
                 <tr>
                     <td>{{ ticket.ticketid }}</td>
                     <td>{{ ticket.datecreated }}</td>
-                    <td>{{ ticket.dateupdated }}</td>
                     <td><a href="{% url 'ticket_detail' pk=ticket.pk %}">{{ ticket.summary }}</a></td>
                     <td>{{ ticket.assignedto }}</td>
                 </tr>

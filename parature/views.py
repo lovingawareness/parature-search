@@ -22,7 +22,7 @@ def comment_detail(request, pk):
 def ticket_search(request):
     if 'q' in request.GET and request.GET['q']:
         q = request.GET['q']
-        tickets = TicketDetails.objects.filter(details__icontains=q).order_by('id')
+        tickets = TicketDetails.objects.filter(details__icontains=q).order_by('-id')
         return render(request, 'parature/ticket_search.html', {'tickets': tickets, 'query': q})
     else:
         return render(request, 'parature/ticket_search.html')
