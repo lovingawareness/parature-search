@@ -17,6 +17,7 @@
                 <li>Details: <br />{{ ticket.details|safe }}</li>
                 <li>Solution: {{ ticket.solution|safe }}</li>
             </ul>
+            <pre>{{ ticket|jsonify }}</pre>
         </div>
         <div>
             <h3>Ticket Comments</h3>
@@ -31,6 +32,7 @@
             <li>Time spent (hours): {{ history_item.time_spent }}</li>
             <li>Comments: <br />{{ history_item.comments|safe }}</li>
         </ul>
+        <pre>{{ history_item|jsonify }}</pre>
         </li>
         {% endfor %}
             </ol>
