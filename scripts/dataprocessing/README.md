@@ -2,9 +2,9 @@
 
 These scripts process the CSV data exports from Parature ticketing system, for customer and ticket data. The scripts first combine CSVs downloaded per year for ticket details and ticket history, remove vestigial columns from the ticket details, clean up formatting in the column names, remove the BOM bytes from the start of the files, and import the data into a PostgreSQL database.
 
-## Preparing the PostgreSQL Database
+Quick overview of how these files are arranged is below. For a full overview, look at the [ETL Process in the wiki](https://github.com/tothebeat/parature-search/wiki/Extract-Transform-Load-Parature-Data).
 
-### Drop the existing tables and relations
+## Drop the existing tables and relations
 
 1. Drop the tables from the `import` schema: `./drop_imported_tables.sh`
 2. Drop the tables from the `public` schema: `./drop_public_tables.sh`
@@ -13,7 +13,7 @@ These scripts process the CSV data exports from Parature ticketing system, for c
 
 `./compile_and_process_20171214.sh`
 
-# Import the processed CSV data to the PostgreSQL Database
+## Import the processed CSV data to the PostgreSQL Database
 
 `./psql_import_20171214.sh`
 
