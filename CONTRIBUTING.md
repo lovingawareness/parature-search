@@ -1,0 +1,1 @@
+This is more of a personal repository than anything, but if you see something you think needs fixing, please create an Issue. You could also fork the code and send a Pull Request for the changes you see fit, but I don't want to waste your time if I don't have time to get to looking at your changes. Your best bet is to fork it and modify as you see fit for your own uses.
