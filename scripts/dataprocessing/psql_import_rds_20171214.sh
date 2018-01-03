@@ -7,8 +7,9 @@ COMPILED_FOLDER=$ROOT_FOLDER/compiled
 DATESTRING=20171214
 # Insert these files into the PostgreSQL database, into the import schema
 echo Inserting data files into the PostgreSQL database...
-echo Make sure that the database host, username, and password are set with environment variables DB_HOST, DB_USER, and DB_PASS.
+echo Make sure that the database host, username, and password are set with environment variables DB_HOST, DB_NAME, DB_USER, and DB_PASS.
 echo Hostname: $DB_HOST
+echo Database: $DB_NAME
 echo Username: $DB_USER
 echo Password: $DB_PASS
 echo Processing customer data file.
