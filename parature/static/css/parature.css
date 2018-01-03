@@ -19,10 +19,10 @@ body {
 }
 
 pre {
-    white-space: pre-line;
+    white-space: pre-wrap;
     word-break: keep-all;
 }
 
 table {
-    font-size: small;
+    font-size: inherit;
 }

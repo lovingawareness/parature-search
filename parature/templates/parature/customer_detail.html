@@ -4,34 +4,7 @@
 {% block content %}
     <div class="customer">
         <h1>Customer:</h1>
-        <div class="input-group col-md-4">
-              <span class="input-group-addon" id="sizing-addon2">Name</span>
-              <input type="text" class="form-control" value="{{ customer.first_name }} {{ customer.last_name }}" aria-describedby="sizing-addon2" readonly="readonly">
-        </div>
-        <div class="input-group col-md-4">
-              <span class="input-group-addon" id="sizing-addon2">SLA</span>
-              <input type="text" class="form-control" value="{{ customer.service_level_agreement }}" aria-describedby="sizing-addon2" readonly="readonly">
-        </div>
-        <div class="input-group col-md-4">
-              <span class="input-group-addon" id="sizing-addon2">Email</span>
-              <input type="text" class="form-control" value="{{ customer.email }}" aria-describedby="sizing-addon2" readonly="readonly">
-        </div>
-        <div class="input-group col-md-4">
-              <span class="input-group-addon" id="sizing-addon2">Department</span>
-              <input type="text" class="form-control" value="{{ customer.department }}" aria-describedby="sizing-addon2" readonly="readonly">
-        </div>
-        <div class="input-group col-md-4">
-              <span class="input-group-addon" id="sizing-addon2">Title</span>
-              <input type="text" class="form-control" value="{{ customer.title }}" aria-describedby="sizing-addon2" readonly="readonly">
-        </div>
-        <div class="input-group col-md-4">
-              <span class="input-group-addon" id="sizing-addon2">NetID</span>
-              <input type="text" class="form-control" value="{{ customer.netid }}" aria-describedby="sizing-addon2" readonly="readonly">
-        </div>
-        <div class="input-group col-md-4">
-              <span class="input-group-addon" id="sizing-addon2">Building</span>
-              <input type="text" class="form-control" value="{{ customer.building }}" aria-describedby="sizing-addon2" readonly="readonly">
-        </div>
+        <pre>{{ customer|jsonify }}</pre>
     </div>
     <div class="customer-tickets">
         <h1>Tickets:</h2>
