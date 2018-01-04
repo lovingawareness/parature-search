@@ -9,14 +9,6 @@
         </div>
         <div>
             <h3>Ticket Details</h3>
-            <ul>
-                <li>Ticket ID: <a href="https://s3.parature.com/link/desk/5525/5563/Ticket/{{ ticket.ticketid }}" target="_blank">Parature Ticket Link - {{ ticket.ticketid }} (opens in new tab)</a></li>
-                <li>Date created: {{ ticket.datecreated }}</li>
-                <li>Date updated: {{ ticket.dateupdated }}</li>
-                <li>Summary: {{ ticket.summary }}</li>
-                <li>Details: <br />{{ ticket.details|safe }}</li>
-                <li>Solution: {{ ticket.solution|safe }}</li>
-            </ul>
             <pre>{{ ticket|jsonify }}</pre>
         </div>
         <div>
@@ -24,15 +16,7 @@
             <ol>
         {% for history_item in ticket.tickethistory_set.all %}
         <li>
-        <ul>
-            <li>Action date: {{ history_item.action_date }}</li>
-            <li>Action name: {{ history_item.action_name }}</li>
-            <li>Assigned to CSR: {{ history_item.assigned_to_csr }}</li>
-            <li>Performed by CSR: {{ history_item.performed_by_csr }}</li>
-            <li>Time spent (hours): {{ history_item.time_spent }}</li>
-            <li>Comments: <br />{{ history_item.comments|safe }}</li>
-        </ul>
-        <pre>{{ history_item|jsonify }}</pre>
+            <pre>{{ history_item|jsonify }}</pre>
         </li>
         {% endfor %}
             </ol>
