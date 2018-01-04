@@ -3,8 +3,17 @@
 {% block content %}
     <h2>Ticket Search</h2>
     <form action="." method="get" class="form-inline" id="search">
-        <input type="text" name="q"{% if query %} value="{{ query }}"{% endif %} placeholder="Search query" class="form-control" id="searchInput">
-        <button type="submit" class="btn btn-default">Search</button>
+        <p>
+            <input type="text" name="q"{% if query %} value="{{ query }}"{% endif %} placeholder="Search query" class="form-control" id="searchInput">
+            <button type="submit" class="btn btn-default">Search</button>
+        </p>
+        <p>
+            Include fields: 
+            <input id="search_ticket_details" name="search_ticket_details" type="checkbox" checked><label for="search_ticket_details">Ticket Details</label>
+            <input id="search_ticket_summary" name="search_ticket_summary" type="checkbox" checked><label for="search_ticket_summary">Ticket Summary</label>
+            <input id="search_ticket_solution" name="search_ticket_solution" type="checkbox" checked><label for="search_ticket_solution">Ticket Solution</label>
+            <input id="search_ticket_history" name="search_ticket_history" type="checkbox"><label for="search_ticket_history">Ticket History (Comments)</label>
+        </p>
     </form>
     {% if query %}
     <h1>The results from your search query of '{{ query }}' ({{ tickets|length }} tickets matched):</h1>
