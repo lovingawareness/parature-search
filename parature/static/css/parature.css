@@ -1,17 +1,5 @@
-h1, h2, h3, h4 {
-    font-family: 'Rubik';
-}
-
-h1 a {
-    font-family: 'Rubik';
-}
-
 body {
     padding-left: 15px;
-}
-
-.page-header h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {
-    text-decoration: none;
 }
 
 .content {
@@ -30,27 +18,11 @@ body {
     color: #000000;
 }
 
-form#search input[type=text] {
-    height: 50px !important;
-    font-size: 30pt !important;
-    width: 50% !important;
-}
-
-button {
-    height: 50px;
-    width: 10%;
-}
-
 pre {
-    white-space: pre-line;
+    white-space: pre-wrap;
     word-break: keep-all;
 }
 
-div.customer div.input-group {
-    float: left !important;
-}
-
-div.customer-tickets {
-    clear: both;
-    padding-top: 30px;
+table {
+    font-size: inherit;
 }

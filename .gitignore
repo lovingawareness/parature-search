@@ -103,3 +103,6 @@ ENV/
 # Django secrets
 secret.txt
 .secrets
+
+# vim swap files
+*.swp

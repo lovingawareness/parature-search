@@ -1,9 +1,9 @@
+from functools import reduce
+import operator
 from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from .models import Customer, TicketDetails, TicketHistory
-
-def home(request):
-    return render(request, 'parature/home.html')
 
 @login_required
 def ticket_detail(request, pk):
@@ -24,26 +24,21 @@ def comment_detail(request, pk):
 @login_required
 def ticket_search(request):
     if 'q' in request.GET and request.GET['q']:
-        q = request.GET['q']
-        tickets = TicketDetails.objects.filter(details__icontains=q).order_by('id')
-        return render(request, 'parature/ticket_list_with_search.html', {'tickets': tickets, 'query': q})
+        query = request.GET['q']
+        search_fields = {'ticket_details': request.GET.get('search_ticket_details') == 'on',
+                        'ticket_summary': request.GET.get('search_ticket_summary') == 'on',
+                        'ticket_solution': request.GET.get('search_ticket_solution') == 'on',
+                        'ticket_comments': request.GET.get('search_ticket_history') == 'on'}
+        query_filters = []
+        if search_fields['ticket_details']:
+            query_filters.append(Q(details__icontains=query))
+        if search_fields['ticket_summary']:
+            query_filters.append(Q(summary__icontains=query))
+        if search_fields['ticket_solution']:
+            query_filters.append(Q(solution__icontains=query))
+        if search_fields['ticket_comments']:
+            query_filters.append(Q(tickethistory__comments__icontains=query))
+        tickets = TicketDetails.objects.filter(reduce(operator.or_, query_filters)).distinct().order_by('-id')
+        return render(request, 'parature/ticket_search.html', {'tickets': tickets, 'query': query})
     else:
-        return render(request, 'parature/ticket_list_with_search.html')
-
-@login_required
-def customer_search(request):
-    if 'q' in request.GET and request.GET['q']:
-        q = request.GET['q']
-        customers = Customer.objects.filter(netid__icontains=q).order_by('netid')
-        return render(request, 'parature/customer_list_and_search.html', {'customers': customers, 'query': q})
-    else:
-        return render(request, 'parature/customer_list_and_search.html')
-
-@login_required
-def comment_search_by_csr(request):
-    if 'q' in request.GET and request.GET['q']:
-        q = request.GET['q']
-        comments = TicketHistory.objects.filter(performed_by_csr__icontains=q).filter(action_name='Post Internal Comment').order_by('id')
-        return render(request, 'parature/comments_by_csr.html', {'comments': comments, 'query': q})
-    else:
-        return render(request, 'parature/comments_by_csr.html')
+        return render(request, 'parature/ticket_search.html')

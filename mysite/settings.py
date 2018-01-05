@@ -39,7 +39,9 @@ except NameError:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 ALLOWED_HOSTS = ['*']
+INTERNAL_IPS = ('localhost', '127.0.0.1')
 
 
 # Application definition
@@ -51,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
     'parature',
 ]
 
@@ -62,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -139,3 +143,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = '/login/'
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CONFIG': "mysite.settings.show_toolbar",
+    'RENDER_PANELS': True
+}
+def show_toolbar(request):
+    return True
