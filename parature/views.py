@@ -42,3 +42,14 @@ def ticket_search(request):
         return render(request, 'parature/ticket_search.html', {'tickets': tickets, 'query': query})
     else:
         return render(request, 'parature/ticket_search.html')
+
+def csrlist(request):
+    csrs = sorted(TicketHistory.objects.values_list('performed_by_csr', flat=True).distinct())
+    return render(request, 'parature/csrlist.html', {'csrs': csrs})
+
+def csr_detail(request):
+    csr = 'Krunal Chokshi'
+    solved_count = len(TicketHistory.objects.filter(Q(action_name__exact='Solve'), Q(performed_by_csr__exact=csr)).values_list('ticket_id', flat=True).distinct())
+    commented_count = len(TicketHistory.objects.filter(Q(action_name__exact='Post External Comment') | Q(action_name__exact='Post Internal Comment'), Q(performed_by_csr__exact=csr)).values_list('ticket_id', flat=True).distinct())
+    touched_count = len(TicketHistory.objects.filter(Q(performed_by_csr__exact=csr)).values_list('ticket_id', flat=True).distinct())
+    return render(request, 'parature/csr.html', {'csr': csr, 'solved_count': solved_count, 'commented_count': commented_count, 'touched_count': touched_count})
