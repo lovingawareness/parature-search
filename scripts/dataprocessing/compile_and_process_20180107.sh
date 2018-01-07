@@ -9,7 +9,7 @@ CURRENT_FOLDER=$ROOT_FOLDER/current
 # This is where the $HISTORICAL_FOLDER and current data dumps are combined into single CSV files
 COMPILED_FOLDER=$ROOT_FOLDER/compiled
 # This is the date string found in the current data dump
-DATESTRING=20171214
+DATESTRING=20180107
 # Copy the customer file from the $CURRENT_FOLDER folder to the compiled folder
 cp $CURRENT_FOLDER/customer_$DATESTRING.csv $COMPILED_FOLDER/
 # Remove BOM
@@ -22,6 +22,7 @@ tail -c +4 $HISTORICAL_FOLDER/ticket_details_20131231-20130101.csv > $HISTORICAL
 tail -c +4 $HISTORICAL_FOLDER/ticket_details_20141231-20140101.csv > $HISTORICAL_FOLDER/noBOM/ticket_details_20141231-20140101-noBOM.csv
 tail -c +4 $HISTORICAL_FOLDER/ticket_details_20151231-20150101.csv > $HISTORICAL_FOLDER/noBOM/ticket_details_20151231-20150101-noBOM.csv
 tail -c +4 $HISTORICAL_FOLDER/ticket_details_20161231-20160101.csv > $HISTORICAL_FOLDER/noBOM/ticket_details_20161231-20160101-noBOM.csv
+tail -c +4 $HISTORICAL_FOLDER/ticket_details_20171231-20170101.csv > $HISTORICAL_FOLDER/noBOM/ticket_details_20171231-20170101-noBOM.csv
 echo Processing the $HISTORICAL_FOLDER ticket history files.
 tail -c +4 $HISTORICAL_FOLDER/ticket_history_20111231-20000101.csv > $HISTORICAL_FOLDER/noBOM/ticket_history_20111231-20000101-noBOM.csv
 tail -c +4 $HISTORICAL_FOLDER/ticket_history_20121231-20120101.csv > $HISTORICAL_FOLDER/noBOM/ticket_history_20121231-20120101-noBOM.csv
@@ -29,10 +30,11 @@ tail -c +4 $HISTORICAL_FOLDER/ticket_history_20131231-20130101.csv > $HISTORICAL
 tail -c +4 $HISTORICAL_FOLDER/ticket_history_20141231-20140101.csv > $HISTORICAL_FOLDER/noBOM/ticket_history_20141231-20140101-noBOM.csv
 tail -c +4 $HISTORICAL_FOLDER/ticket_history_20151231-20150101.csv > $HISTORICAL_FOLDER/noBOM/ticket_history_20151231-20150101-noBOM.csv
 tail -c +4 $HISTORICAL_FOLDER/ticket_history_20161231-20160101.csv > $HISTORICAL_FOLDER/noBOM/ticket_history_20161231-20160101-noBOM.csv
+tail -c +4 $HISTORICAL_FOLDER/ticket_history_20171231-20170101.csv > $HISTORICAL_FOLDER/noBOM/ticket_history_20171231-20170101-noBOM.csv
 echo Processing the $CURRENT_FOLDER ticket detail file.
-tail -c +4 $CURRENT_FOLDER/ticket_details_$DATESTRING-20170101.csv > $CURRENT_FOLDER/noBOM/ticket_details_$DATESTRING-20170101-noBOM.csv
+tail -c +4 $CURRENT_FOLDER/ticket_details_$DATESTRING-20180101.csv > $CURRENT_FOLDER/noBOM/ticket_details_$DATESTRING-20180101-noBOM.csv
 echo Processing the $CURRENT_FOLDER ticket history file.
-tail -c +4 $CURRENT_FOLDER/ticket_history_$DATESTRING-20170101.csv > $CURRENT_FOLDER/noBOM/ticket_history_$DATESTRING-20170101-noBOM.csv
+tail -c +4 $CURRENT_FOLDER/ticket_history_$DATESTRING-20180101.csv > $CURRENT_FOLDER/noBOM/ticket_history_$DATESTRING-20180101-noBOM.csv
 echo Compile the $HISTORICAL_FOLDER and $CURRENT_FOLDER ticket details and history files into single files each.
 python compile_csvs_from_historical_and_current.py $DATESTRING $HISTORICAL_FOLDER $CURRENT_FOLDER $COMPILED_FOLDER
 # Dedupe the columns in the customer data file
