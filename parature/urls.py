@@ -9,5 +9,5 @@ urlpatterns = [
     url(r'^customer/(?P<pk>\d+)/$', views.customer_detail, name='customer_detail'),
     url(r'^comment/(?P<pk>\d+)/$', views.comment_detail, name='comment_detail'),
     url(r'^csr/list/$', views.csrlist, name='csrlist'),
-    url(r'^csr/$', views.csr_detail, name='csr_detail'),
+    url(r'^csr/(?P<csr>\D+)/$', views.csr_detail, name='csr_detail'),
 ]
