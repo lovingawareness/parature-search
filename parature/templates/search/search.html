@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+
+{% block content %}
 <h2>Search</h2>
 <form method="get" action=".">
 	<table>
@@ -10,14 +13,42 @@
 		</tr>
 	</table>
 	{% if query %}
-	<h3>Results</h3>
-	{% for result in page.object_list %}
-	<p>
-	<a href="{{ result.object.get_absolute_url }}">{{ result.object.summary }}</a>
-	</p>
-	{% empty %}
-	<p>No results found.</p>
-	{% endfor %}
+    <h3>{{ page.object_list|length }} Results:</h3>
+    <table>
+        <thead>
+            <th>Ticket ID</th>
+            <th>Summary</th>
+            <th>Customer</th>
+            <th>Date Created</th>
+            <th>CSR</th>
+        </thead>
+        <tfoot>
+            <th>Ticket ID</th>
+            <th>Summary</th>
+            <th>Customer</th>
+            <th>Date Created</th>
+            <th>CSR</th>
+        </tfoot>
+        <tbody>
+            {% for result in page.object_list %}
+            <tr>
+                <td>{{ result.object.ticketid }}</td>
+                <td>
+                    <a href="{{ result.object.get_absolute_url }}">{{ result.object.summary }}</a>
+                </td>
+                <td>
+                    <a href="{{ result.object.customerid.get_absolute_url }}">
+                        {{ result.object.customerid.first_name }} {{ result.object.customerid.last_name }}
+                    </a>
+                </td>
+                <td>{{ result.object.datecreated }}</td>
+                <td>{{ result.object.assignedto }}</td>
+            </tr>
+            {% empty %}
+            <p>No results found.</p>
+            {% endfor %}
+        </tbody>
+    </table>
 	{% if page.has_previous or page.has_next %}
 	<div>
 		{% if page.has_previous %}
@@ -33,3 +64,4 @@
 	{# Show some example queries to run, maybe query syntax, something else? #}
 	{% endif %}
 </form>
+{% endblock %}

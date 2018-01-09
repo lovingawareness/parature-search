@@ -9,6 +9,7 @@
         {% endblock %}
         </style>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script type="text/javascript">
             {% block script %}
             {% endblock %}
@@ -17,7 +18,7 @@
     <body>
         <div class="page-header">
             <h1>
-                <a href="{% url 'ticket_search' %}">Search Tickets</a>
+                <a href="/search">Search Tickets</a>
             </h1>
         </div>
         <div class="content">

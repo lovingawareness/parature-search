@@ -4,13 +4,22 @@
 {% block content %}
     <div class="customer">
         <h1>Customer:</h1>
-        <pre>{{ customer|jsonify }}</pre>
+        <h3>Name: {{ customer.first_name }} {{ customer.last_name }}</h3>
+        <h3>NetID: {{ customer.netid }}</h3>
+        <h3>Email: {{ customer.email }}</h3>
+        <h3>SLA: {{ customer.service_level_agreement }}</h3>
+        <h3>Department: {{ customer.department }}</h3>
+        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#customer_details">Toggle Details</button>
+        <div id="customer_details" class="collapse">
+            <pre>{{ customer|jsonify }}</pre>
+        </div>
     </div>
     <div class="customer-tickets">
-        <h1>Tickets:</h2>
+        <h1>Tickets:</h1>
         <table id="tickets">
             <thead>
                 <tr>
+                    <th></th>
                     <th>ID</th>
                     <th>Created</th>
                     <th>Summary</th>
@@ -19,6 +28,7 @@
             </thead>
             <tfoot>
                 <tr>
+                    <th></th>
                     <th>ID</th>
                     <th>Created</th>
                     <th>Summary</th>
@@ -28,6 +38,7 @@
             <tbody>
                 {% for ticket in tickets %}
                 <tr>
+                    <td>{{ forloop.counter }}</td>
                     <td>{{ ticket.ticketid }}</td>
                     <td>{{ ticket.datecreated }}</td>
                     <td><a href="{% url 'ticket_detail' pk=ticket.pk %}">{{ ticket.summary }}</a></td>
