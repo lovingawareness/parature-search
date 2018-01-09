@@ -115,6 +115,10 @@ class Customer(models.Model):
         managed = False
         db_table = 'customer'
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('customer_detail', args=[str(self.id)])
+
     def __str__(self):
         return self.first_name + ' ' + self.last_name + ' <' + self.email + '>'
 
@@ -215,6 +219,10 @@ class TicketDetails(models.Model):
         verbose_name = 'Ticket Details'
         verbose_name_plural = 'Tickets Details'
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('ticket_detail', args=[str(self.id)])
+
     def __str__(self):
         return 'Ticket ID ' + str(self.ticketid)
 
@@ -228,6 +236,10 @@ class TicketHistory(models.Model):
     ticket = models.ForeignKey(TicketDetails, models.DO_NOTHING, blank=True, null=True)
     time_spent = models.TextField(blank=True, null=True)
     id = models.IntegerField(primary_key=True)
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('comment_detail', args=[str(self.id)])
 
     class Meta:
         managed = False

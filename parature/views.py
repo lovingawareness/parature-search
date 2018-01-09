@@ -5,23 +5,23 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from .models import Customer, TicketDetails, TicketHistory
 
-@login_required
+#@login_required
 def ticket_detail(request, pk):
     ticket = get_object_or_404(TicketDetails, pk=pk)
     return render(request, 'parature/ticket_detail.html', {'ticket': ticket})
 
-@login_required
+#@login_required
 def customer_detail(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
-    tickets = customer.ticketdetails_set.all()
+    tickets = customer.ticketdetails_set.all().order_by('-id')
     return render(request, 'parature/customer_detail.html', {'customer': customer, 'tickets': tickets})
 
-@login_required
+#@login_required
 def comment_detail(request, pk):
     comment = get_object_or_404(TicketHistory, pk=pk)
     return render(request, 'parature/comment_detail.html', {'comment': comment})
 
-@login_required
+#@login_required
 def ticket_search(request):
     if 'q' in request.GET and request.GET['q']:
         query = request.GET['q']
