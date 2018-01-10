@@ -7,8 +7,8 @@
             <li>Ticket ID: <a href="https://s3.parature.com/link/desk/5525/5563/Ticket/{{ comment.ticket_id }}" target="_blank">Parature Ticket Link - {{ comment.ticket_id }} (opens in new tab)</a></li>
             <li>Action Date: {{ comment.action_date }}</li>
             <li>Action Name: {{ comment.action_name }}</li>
-            <li>Assigned to CSR: {{ comment.assigned_to_csr }}</li>
-            <li>Performed by CSR: {{ comment.performed_by_csr }}</li>
+            <li>Assigned to CSR: <a href="{% url 'csr_detail' csr=comment.assigned_to_csr %}">{{ comment.assigned_to_csr }}</a></li>
+            <li>Performed by CSR: <a href="{% url 'csr_detail' csr=comment.performed_by_csr %}">{{ comment.performed_by_csr }}</a></li>
             <li>Time Spent (hours): {{ comment.time_spent }}</li>
             <li>Comments: <br /><textarea cols="100" rows="5" wrap="hard">{{ comment.comments|safe }}</textarea></li>
         </ul>

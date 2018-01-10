@@ -1,5 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
 <ol>
 {% for csr in csrs %}
 <li><a href="{% url 'csr_detail' csr=csr %}">{{ csr }}</a></li>
 {% endfor %}
 </ol>
+{% endblock %}

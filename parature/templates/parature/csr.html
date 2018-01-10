@@ -1,6 +1,12 @@
-{% load jsonify %}
+{% extends 'base.html' %}
 
-{{ csr }}<br/>
-Tickets solved: {{ solved_count }}<br/>
-Tickets commented on: {{ commented_count }}<br/>
-Tickets touched: {{ touched_count }}<br/>
+{% block content %}
+<h1>{{ csr }}</h1>
+<ul>
+    <li>Tickets solved: {{ solved_count }}</li>
+    <li>Tickets commented on: {{ commented_count }}</li>
+    <li>Tickets touched: {{ touched_count }}</li>
+    <li>Oldest ticket action date: {{ oldest_action.action_date }} (<a href="{% url 'comment_detail' pk=oldest_action.pk %}">link</a>)</li>
+    <li>Newest ticket action date: {{ newest_action.action_date }} (<a href="{% url 'comment_detail' pk=newest_action.pk %}">link</a>)</li>
+</ul>
+{% endblock %}
