@@ -42,7 +42,7 @@
                     <td>{{ ticket.ticketid }}</td>
                     <td>{{ ticket.datecreated }}</td>
                     <td><a href="{% url 'ticket_detail' pk=ticket.pk %}">{{ ticket.summary }}</a></td>
-                    <td>{{ ticket.assignedto }}</td>
+                    <td><a href="{% url 'csr_detail' csr=ticket.assignedto %}">{{ ticket.assignedto }}</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

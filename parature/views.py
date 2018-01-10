@@ -43,12 +43,18 @@ def ticket_search(request):
     else:
         return render(request, 'parature/ticket_search.html')
 
-def csrlist(request):
+def csr_list(request):
     csrs = sorted(TicketHistory.objects.values_list('performed_by_csr', flat=True).distinct())
-    return render(request, 'parature/csrlist.html', {'csrs': csrs})
+    return render(request, 'parature/csr_list.html', {'csrs': csrs})
 
 def csr_detail(request, csr):
-    solved_count = len(TicketHistory.objects.filter(Q(action_name__exact='Solve'), Q(performed_by_csr__exact=csr)).values_list('ticket_id', flat=True).distinct())
-    commented_count = len(TicketHistory.objects.filter(Q(action_name__exact='Post External Comment') | Q(action_name__exact='Post Internal Comment'), Q(performed_by_csr__exact=csr)).values_list('ticket_id', flat=True).distinct())
-    touched_count = len(TicketHistory.objects.filter(Q(performed_by_csr__exact=csr)).values_list('ticket_id', flat=True).distinct())
-    return render(request, 'parature/csr.html', {'csr': csr, 'solved_count': solved_count, 'commented_count': commented_count, 'touched_count': touched_count})
+    Q_csr = Q(performed_by_csr__exact=csr)
+    Q_comment = Q(action_name__exact='Post External Comment') | Q(action_name__exact='Post Internal Comment')
+    Q_solution = Q(action_name__exact='Solve')
+    solved_count = TicketHistory.objects.filter(Q_solution, Q_csr).values_list('ticket_id', flat=True).distinct().count()
+    commented_count = TicketHistory.objects.filter(Q_comment, Q_csr).values_list('ticket_id', flat=True).distinct().count()
+    touched_count = TicketHistory.objects.filter(Q_csr).values_list('ticket_id', flat=True).distinct().count()
+    oldest_action = TicketHistory.objects.filter(Q_csr).filter(action_date__isnull=False).earliest('action_date')
+    newest_action = TicketHistory.objects.filter(Q_csr).filter(action_date__isnull=False).latest('action_date')
+    return render(request, 'parature/csr.html', {'csr': csr, 'solved_count': solved_count, 'commented_count': commented_count, 'touched_count': touched_count, 'oldest_action': oldest_action, 'newest_action': newest_action})
+
