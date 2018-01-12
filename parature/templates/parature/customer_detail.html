@@ -1,6 +1,17 @@
 {% extends 'base.html' %}
 {% load jsonify %}
 
+{% block script %}
+$(document).ready(function() {
+$('table#tickets').DataTable({
+        "paging": false,
+        "searching": false,
+        "ordering": false,
+        "info": false
+    });
+});
+{% endblock %}
+
 {% block content %}
     <div class="customer">
         <h1>Customer:</h1>
