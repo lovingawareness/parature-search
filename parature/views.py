@@ -43,6 +43,25 @@ def ticket_search(request):
     else:
         return render(request, 'parature/ticket_search.html')
 
+def customer_search(request):
+    query_filters = []
+    queries = {'Name': '', 'NetID': '', 'Email': ''}
+    if request.GET.get('q_netid'):
+        queries['NetID'] = request.GET.get('q_netid')
+        query_filters.append(Q(netid__icontains=queries['NetID']))
+    if request.GET.get('q_name'):
+        queries['Name'] = request.GET.get('q_name')
+        query_filters.append(Q(first_name__icontains=queries['Name']) or Q(last_name__icontains=queries['Name']))
+    if request.GET.get('q_email'):
+        queries['Email'] = request.GET.get('q_email')
+        query_filters.append(Q(email__icontains=queries['Email']))
+    if len(query_filters) > 0:
+        customers = Customer.objects.filter(reduce(operator.and_, query_filters)).distinct().order_by('netid')
+        query_string = ', '.join((k + ':' + v for k,v in queries.items()))
+        return render(request, 'parature/customer_search.html', {'customers': customers, 'query_string': query_string, 'queries': queries})
+    else:
+        return render(request, 'parature/customer_search.html')
+
 def csr_list(request):
     csrs = sorted(TicketHistory.objects.values_list('performed_by_csr', flat=True).distinct())
     return render(request, 'parature/csr_list.html', {'csrs': csrs})
