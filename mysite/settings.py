@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'parature',
     'haystack',
+    'logactivity',
 ]
 
 HAYSTACK_CONNECTIONS = {
@@ -74,6 +75,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'logactivity.middleware.LogAllMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
