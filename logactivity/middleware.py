@@ -11,9 +11,13 @@ class LogAllMiddleware(object):
             response = self.get_response(request)
             return response
 
+        meta = request.META
+
         newRecord = Record(
             path = request.path,
-            user = request.user
+            user = request.user,
+            query_string = meta['QUERY_STRING'],
+            user_address = meta['HTTP_X_REAL_IP'],
             )
         newRecord.save()
         response = self.get_response(request)
