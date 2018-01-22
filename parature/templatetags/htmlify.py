@@ -1,19 +1,20 @@
+from collections import OrderedDict
 from django import template
 from django.core import serializers
-import json
+from htmllaundry import sanitize
+from htmllaundry.cleaners import CommentCleaner
 
 register = template.Library()
 
 @register.filter
 def htmlify(value):
-    replacements = {
-            '\n': '<br>',
-            '&lt;': '<',
-            '&gt;': '>',
-            '&amp;': '&',
-            '&quot;': '"',
-            '&#8217;': '\''
-        }
-    for val, replacement in replacements.items():
-        value = value.replace(val, replacement)
-    return value
+    replacements = OrderedDict([
+        ('&amp;', '&'),
+        ('&lt;', '<'),
+        ('&gt;', '>'),
+        ('&quot;', '"'),
+        ('""', '"')
+        ])
+    for k,v in replacements.items():
+        value = value.replace(k, v)
+    return sanitize(value, CommentCleaner)

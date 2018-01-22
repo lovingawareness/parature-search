@@ -8,12 +8,12 @@
         <div>
             <h3>Ticket Details</h3>
             <h4>Ticket ID: <a href="https://s3.parature.com/link/desk/5525/5563/Ticket/{{ ticket.ticketid }}">{{ ticket.ticketid }}</a> (Parature link)</h4>
-            <h4>Summary:</h4>
-            <p>{% autoescape off %}{{ ticket.summary|htmlify }}{% endautoescape %}</p>
-            <h4>Details:</h4>
-            <p>{% autoescape off %}{{ ticket.details|htmlify }}{% endautoescape %}</p>
-            <h4>Solution:</h4>
-            <p>{% autoescape off %}{{ ticket.solution|htmlify }}{% endautoescape %}</p>
+            <h4>Summary</h4>
+            <div class="ticket_textfield">{{ ticket.summary }}</div>
+            <h4>Details</h4>
+            <div class="ticket_textfield">{{ ticket.details|safe }}</div>
+            <h4>Solution</h4>
+            <div class="ticket_textfield">{% if ticket.solution %}{{ ticket.solution|safe }}{% else %}(Solution left blank.){% endif %}</div>
             <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details">Toggle Details</button>
             <div id="details" class="collapse">
                 <pre>{{ ticket|jsonify }}</pre>
@@ -24,9 +24,11 @@
             <ol>
         {% for history_item in ticket.tickethistory_set.all %}
         <li>
-            <h4>{{ history_item.action_date }}: {{ history_item.action_name }} performed by <a href="{% url 'csr_detail' csr=history_item.performed_by_csr %}">{{ history_item.performed_by_csr }}</a> ({{ history_item.time_spent|floatformat:"-3" }} hours)</h4>
-            <h4>Comments:</h4>
-            <p>{% autoescape off %}{{ history_item.comments|htmlify }}{% endautoescape %}</p>
+            <h4>{{ history_item.action_date }}: {{ history_item.action_name }} performed by <a href="{% url 'csr_detail' csr=history_item.performed_by_csr %}">{{ history_item.performed_by_csr }}</a> ({{ history_item.time_spent|floatformat:"-3" }} hours spent)</h4>
+            {% if history_item.comments %}
+            <h4>Comments</h4>
+            <div class="ticket_textfield">{{ history_item.comments|htmlify|safe }}</div>
+            {% endif %}
             <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#comment{{ forloop.counter }}">Toggle Details</button>
             <div id="comment{{ forloop.counter }}" class="collapse">
                 <pre>{{ history_item|jsonify }}</pre>
