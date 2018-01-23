@@ -9,7 +9,7 @@ CURRENT_FOLDER=$ROOT_FOLDER/current
 # This is where the $HISTORICAL_FOLDER and current data dumps are combined into single CSV files
 COMPILED_FOLDER=$ROOT_FOLDER/compiled
 # This is the date string found in the current data dump
-DATESTRING=20180107
+DATESTRING=20180122
 # Copy the customer file from the $CURRENT_FOLDER folder to the compiled folder
 cp $CURRENT_FOLDER/customer_$DATESTRING.csv $COMPILED_FOLDER/
 # Remove BOM

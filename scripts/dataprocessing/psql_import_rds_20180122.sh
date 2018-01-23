@@ -4,7 +4,7 @@ ROOT_FOLDER=/data/Parature
 # This is where the $HISTORICAL_FOLDER and current data dumps are combined into single CSV files
 COMPILED_FOLDER=$ROOT_FOLDER/compiled
 # This is the date string found in the current data dump
-DATESTRING=20180107
+DATESTRING=20180122
 # Insert these files into the PostgreSQL database, into the import schema
 echo Inserting data files into the PostgreSQL database...
 echo Make sure that the database host, username, password, and name are set with environment variables DB_HOST, DB_USER, DB_PASS, and DB_NAME.
