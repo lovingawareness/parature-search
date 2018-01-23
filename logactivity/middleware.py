@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user
 from .models import Record
 
 class LogAllMiddleware(object):
@@ -15,7 +16,7 @@ class LogAllMiddleware(object):
 
         newRecord = Record(
             path = request.path,
-            user = request.user.id,
+            user = get_user(request),
             query_string = meta['QUERY_STRING'],
             user_address = meta['HTTP_X_REAL_IP'],
             )
