@@ -12,10 +12,12 @@ $(document).ready(function() {
 
 {% block content %}
     <form action="." method="get" class="form-inline" id="search">
-        <input type="text" name="q_name"{% if queries.Name %} value="{{ queries.Name }}"{% endif %} placeholder="Partial name (case insensitive)" class="form-control" id="searchInput">
-        <input type="text" name="q_netid"{% if queries.NetID %} value="{{ queries.NetID }}"{% endif %} placeholder="NetID (case insensitive)" class="form-control" id="searchInput">
-        <input type="text" name="q_email"{% if queries.Email %} value="{{ queries.Email }}"{% endif %} placeholder="Partial Email (case insensitive)" class="form-control" id="searchInput">
-        <button type="submit" class="btn btn-default">Search</button>
+        <ul class="list-inline">
+            <li><input type="text" name="q_name"{% if queries.Name %} value="{{ queries.Name }}"{% endif %} placeholder="Partial name (case insensitive)" class="form-control"></li>
+            <li><input type="text" name="q_netid"{% if queries.NetID %} value="{{ queries.NetID }}"{% endif %} placeholder="NetID (case insensitive)" class="form-control"></li>
+            <li><input type="text" name="q_email"{% if queries.Email %} value="{{ queries.Email }}"{% endif %} placeholder="Partial Email (case insensitive)" class="form-control"></li>
+            <li><button type="submit" class="btn btn-default">Search</button></li>
+        </ul>
     </form>
     {% if query_string %}
     <h1>The results from your search query of '{{ query_string }}' ({{ customers|length }} customers matched):</h1>
