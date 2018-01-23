@@ -8,21 +8,20 @@ $(document).ready(function() {
         "ordering": true,
         "searching": false
     });
+
+    $('#id_q').addClass('form-control');
+    $('input[type=submit]').addClass('btn btn-default');
 });
 {% endblock %}
 
 {% block content %}
 <h2>Search</h2>
-<form method="get" action=".">
-	<table>
-		{{ form.as_table }}
-		<tr>
-			<td><a href="http://whoosh.readthedocs.io/en/latest/querylang.html" target="_blank">search syntax</a></td>
-			<td>
-				<input type="submit" value="Search">
-			</td>
-		</tr>
-	</table>
+<form method="get" action="." id="search">
+    <ul class="list-unstyled">
+		{{ form.as_ul }}
+        <li><a href="http://whoosh.readthedocs.io/en/latest/querylang.html" target="_blank">search syntax</a></li>
+        <li><input type="submit" value="Search"></li>
+	</ul>
 	{% if query %}
     <h3>Results</h3>
     <table id="results">
