@@ -15,7 +15,7 @@ class LogAllMiddleware(object):
 
         newRecord = Record(
             path = request.path,
-            user = request.user,
+            user = request.user.id,
             query_string = meta['QUERY_STRING'],
             user_address = meta['HTTP_X_REAL_IP'],
             )
