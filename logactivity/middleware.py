@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth import get_user
 from .models import Record
 
@@ -12,11 +13,15 @@ class LogAllMiddleware(object):
             response = self.get_response(request)
             return response
 
+        user = get_user(request)
+        if type(user) == AnonymousUser:
+            user = None
+
         meta = request.META
 
         newRecord = Record(
             path = request.path,
-            user = get_user(request),
+            user = user,
             query_string = meta['QUERY_STRING'],
             user_address = meta['HTTP_X_REAL_IP'],
             )
