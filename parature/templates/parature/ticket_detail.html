@@ -71,7 +71,7 @@ $(document).ready(function() {
                 </tfoot>
                 <tbody>
                     {% for h in ticket.tickethistory_set.all %}
-                    {% if h.action_name == "Grab Ticket" or h.action_name == "Change Value" or h.action_name == "Feedback follow up - fac" or h.action_name == "Change Value" or h.action_name == "Auto-close Solved Faculty" %}
+                    {% if h.action_name == "Grab Ticket" or h.action_name == "Change Value" or h.action_name == "Feedback follow up - fac" or h.action_name == "Change Value" or h.action_name == "Auto-close Solved Faculty" or h.action_name == "appdev - email alert" or h.action_name == "Auto-close Solved SPIN" or h.action_name == "Auto-close Solved regular" or h.action_name == "Auto-close Solved tickets" or h.action_name == "Raghu New Ticket Alert" or h.action_name == "Close Tickets Automatically" or h.action_name == "SC - Overdue Loaners" or h.action_name == "Incorrect Extra Action" or h.action_name == "Infra - Alert (Assigned Ticket)" or h.action_name == "SBR" %}
                     <tr class="info">
                     {% elif h.action_name == "Solve" %}
                     <tr class="success">
