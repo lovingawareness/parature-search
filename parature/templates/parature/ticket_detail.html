@@ -2,40 +2,94 @@
 {% load jsonify %}
 {% load htmlify %}
 
+{% block script %}
+$(document).ready(function() {
+    // Start the page with the informational/system event rows in the ticket history hidden
+    $('tr.info').toggle();
+    $('button#toggle-info').click(function() {
+        $('tr.info').toggle();
+    });
+});
+{% endblock %}
+
 {% block content %}
     <div class="ticket">
-            <h3>Customer: <a href="{{ ticket.customerid.get_absolute_url }}">{{ ticket.customerid.first_name }} {{ ticket.customerid.last_name }}</a></h3>
-        <div>
             <h3>Ticket Details</h3>
-            <h4>Ticket ID: <a href="https://s3.parature.com/link/desk/5525/5563/Ticket/{{ ticket.ticketid }}">{{ ticket.ticketid }}</a> (Parature link)</h4>
-            <h4>Summary</h4>
-            <div class="ticket_textfield">{{ ticket.summary }}</div>
-            <h4>Details</h4>
-            <div class="ticket_textfield">{{ ticket.details|safe }}</div>
-            <h4>Solution</h4>
-            <div class="ticket_textfield">{% if ticket.solution %}{{ ticket.solution|safe }}{% else %}(Solution left blank.){% endif %}</div>
-            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details">Toggle Details</button>
-            <div id="details" class="collapse">
-                <pre>{{ ticket|jsonify }}</pre>
-            </div>
+            <table class="table table-hover table-condensed table-bordered">
+                <tbody>
+                    <tr>
+                        <td>Customer</td>
+                        <td><a href="{{ ticket.customerid.get_absolute_url }}">{{ ticket.customerid.first_name }} {{ ticket.customerid.last_name }}</a></td>
+                    </tr>
+                    <tr>
+                        <td>Ticket ID</td>
+                        <td><a href="https://s3.parature.com/link/desk/5525/5563/Ticket/{{ ticket.ticketid }}" target="_blank">{{ ticket.ticketid }}</a> (Parature link)</td>
+                    </tr>
+                    <tr>
+                        <td>Summary</td>
+                        <td>{{ ticket.summary }}</td>
+                    </tr>
+                    <tr>
+                        <td>Details</td>
+                        <td>{{ ticket.details|safe }}</td>
+                    </tr>
+                    <tr>
+                        <td>Solution</td>
+                        <td>{% if ticket.solution %}{{ ticket.solution|safe }}{% else %}(Solution left blank.){% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td>Date Created</td>
+                        <td>{{ ticket.datecreated }}</td>
+                    </tr>
+                    <tr>
+                        <td>Date Updated</td>
+                        <td>{{ ticket.dateupdated }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="original-data">{{ ticket|jsonify }}</div>
         </div>
         <div>
             <h3>Ticket Comments</h3>
-            <ol>
-        {% for history_item in ticket.tickethistory_set.all %}
-        <li>
-            <h4>{{ history_item.action_date }}: {{ history_item.action_name }} performed by <a href="{% url 'csr_detail' csr=history_item.performed_by_csr %}">{{ history_item.performed_by_csr }}</a> ({{ history_item.time_spent|floatformat:"-3" }} hours spent)</h4>
-            {% if history_item.comments %}
-            <h4>Comments</h4>
-            <div class="ticket_textfield">{{ history_item.comments|htmlify|safe }}</div>
-            {% endif %}
-            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#comment{{ forloop.counter }}">Toggle Details</button>
-            <div id="comment{{ forloop.counter }}" class="collapse">
-                <pre>{{ history_item|jsonify }}</pre>
+            <div>
+                <button type="button" class="btn btn-info" id="toggle-info">Toggle system events</button>
             </div>
-        </li>
-        {% endfor %}
-            </ol>
+            <table class="table table-hover table-condensed table-bordered">
+                <thead>
+                    <th>Action Date</th>
+                    <th>Action Type</th>
+                    <th>CSR</th>
+                    <th>Time Spent (hrs)</th>
+                    <th>Comments</th>
+                </thead>
+                <tfoot>
+                    <th>Action Date</th>
+                    <th>Action Type</th>
+                    <th>CSR</th>
+                    <th>Time Spent (hrs)</th>
+                    <th>Comments</th>
+                </tfoot>
+                <tbody>
+                    {% for h in ticket.tickethistory_set.all %}
+                    {% if h.action_name == "Grab Ticket" or h.action_name == "Change Value" or h.action_name == "Feedback follow up - fac" or h.action_name == "Change Value" or h.action_name == "Auto-close Solved Faculty" %}
+                    <tr class="info">
+                    {% elif h.action_name == "Solve" %}
+                    <tr class="success">
+                    {% elif h.action_name == "Decline Solution" %}
+                    <tr class="danger">
+                    {% else %}
+                    <tr>
+                    {% endif %}
+                        <div class="original-data">{{ h|jsonify }}</div>
+                        <td>{{ h.action_date }}</td>
+                        <td>{{ h.action_name }}</td>
+                        <td><a href="{% url 'csr_detail' csr=h.performed_by_csr %}">{{ h.performed_by_csr }}</a></td>
+                        <td>{{ h.time_spent|floatformat:"-3" }}</td>
+                        <td>{{ h.comments|htmlify|safe }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 {% endblock %}

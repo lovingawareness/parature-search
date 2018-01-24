@@ -23,10 +23,6 @@ table {
     font-size: inherit;
 }
 
-div.ticket_textfield {
-    border-left-style: solid;
-    border-left-width: thin;
-    border-left-color: blueviolet;
-    padding-left: 5px;
+div.original-data {
+    display: none;
 }
-

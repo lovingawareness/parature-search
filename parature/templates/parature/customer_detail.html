@@ -2,32 +2,40 @@
 {% load jsonify %}
 
 {% block script %}
-$(document).ready(function() {
-$('table#tickets').DataTable({
-        "paging": false,
-        "searching": false,
-        "ordering": false,
-        "info": false
-    });
-});
 {% endblock %}
 
 {% block content %}
     <div class="customer">
-        <h1>Customer:</h1>
-        <h3>Name: {{ customer.first_name }} {{ customer.last_name }}</h3>
-        <h3>NetID: {{ customer.netid }}</h3>
-        <h3>Email: {{ customer.email }}</h3>
-        <h3>SLA: {{ customer.service_level_agreement }}</h3>
-        <h3>Department: {{ customer.department }}</h3>
-        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#customer_details">Toggle Details</button>
-        <div id="customer_details" class="collapse">
-            <pre>{{ customer|jsonify }}</pre>
-        </div>
+        <h3>Customer Details</h3>
+        <table class="table table-condensed table-hover table-bordered">
+            <tbody>
+                <tr>
+                    <td>Name</td>
+                    <td>{{ customer.first_name }} {{ customer.last_name }}</td>
+                </tr>
+                <tr>
+                    <td>NetID</td>
+                    <td>{{ customer.netid }}</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>{{ customer.email }}</td>
+                </tr>
+                <tr>
+                    <td>SLA</td>
+                    <td>{{ customer.service_level_agreement }}</td>
+                </tr>
+                <tr>
+                    <td>Department</td>
+                    <td>{{ customer.department }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="original-data">{{ customer|jsonify }}</div>
     </div>
     <div class="customer-tickets">
-        <h1>Tickets:</h1>
-        <table id="tickets">
+        <h3>Tickets ({{ tickets|length }})</h3>
+        <table id="tickets" class="table table-condensed table-hover table-bordered">
             <thead>
                 <tr>
                     <th></th>
