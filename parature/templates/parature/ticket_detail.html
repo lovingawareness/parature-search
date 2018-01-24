@@ -4,9 +4,9 @@
 
 {% block script %}
 $(document).ready(function() {
-    // Start the page with the "N/A" rows in the ticket history hidden
+    // Start the page with the informational/system event rows in the ticket history hidden
     $('tr.info').toggle();
-    $('button#toggle-na').click(function() {
+    $('button#toggle-info').click(function() {
         $('tr.info').toggle();
     });
 });
@@ -32,7 +32,7 @@ $(document).ready(function() {
         <div>
             <h3>Ticket Comments</h3>
             <div>
-                <button type="button" class="btn btn-info" id="toggle-na">Toggle actions from N/A</button>
+                <button type="button" class="btn btn-info" id="toggle-info">Toggle system events</button>
             </div>
             <table class="table table-hover table-condensed table-bordered">
                 <thead>
@@ -50,13 +50,21 @@ $(document).ready(function() {
                     <th>Comments</th>
                 </tfoot>
                 <tbody>
-                    {% for history_item in ticket.tickethistory_set.all %}
-                    <tr{% if history_item.performed_by_csr == "N/A" %} class="info"{% endif %}>
-                        <td>{{ history_item.action_date }}</td>
-                        <td>{{ history_item.action_name }}</td>
-                        <td><a href="{% url 'csr_detail' csr=history_item.performed_by_csr %}">{{ history_item.performed_by_csr }}</a></td>
-                        <td>{{ history_item.time_spent|floatformat:"-3" }}</td>
-                        <td>{{ history_item.comments|htmlify|safe }}</td>
+                    {% for h in ticket.tickethistory_set.all %}
+                    {% if h.action_name == "Grab Ticket" or h.action_name == "Change Value" or h.action_name == "Feedback follow up - fac" or h.action_name == "Change Value" or h.action_name == "Auto-close Solved Faculty" %}
+                    <tr class="info">
+                    {% elif h.action_name == "Solve" %}
+                    <tr class="success">
+                    {% elif h.action_name == "Decline Solution" %}
+                    <tr class="danger">
+                    {% else %}
+                    <tr>
+                    {% endif %}
+                        <td>{{ h.action_date }}</td>
+                        <td>{{ h.action_name }}</td>
+                        <td><a href="{% url 'csr_detail' csr=h.performed_by_csr %}">{{ h.performed_by_csr }}</a></td>
+                        <td>{{ h.time_spent|floatformat:"-3" }}</td>
+                        <td>{{ h.comments|htmlify|safe }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
