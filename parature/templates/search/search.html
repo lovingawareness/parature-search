@@ -2,13 +2,6 @@
 
 {% block script %}
 $(document).ready(function() {
-    $('table#results').DataTable({
-        "paging": false,
-        "info": false,
-        "ordering": true,
-        "searching": false
-    });
-
     $('#id_q').addClass('form-control');
     $('input[type=submit]').addClass('btn btn-default');
 });
@@ -19,12 +12,11 @@ $(document).ready(function() {
 <form method="get" action="." id="search">
     <ul class="list-unstyled">
 		{{ form.as_ul }}
-        <li><a href="http://whoosh.readthedocs.io/en/latest/querylang.html" target="_blank">search syntax</a></li>
         <li><input type="submit" value="Search"></li>
 	</ul>
 	{% if query %}
     <h3>Results</h3>
-    <table id="results">
+    <table id="results" class="table table-hover table-condensed">
         <thead>
             <th>Ticket ID</th>
             <th>Summary</th>
