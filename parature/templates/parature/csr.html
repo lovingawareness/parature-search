@@ -9,4 +9,46 @@
     <li>Oldest ticket action date: {{ oldest_action.action_date }} (<a href="{% url 'comment_detail' pk=oldest_action.pk %}">link</a>)</li>
     <li>Newest ticket action date: {{ newest_action.action_date }} (<a href="{% url 'comment_detail' pk=newest_action.pk %}">link</a>)</li>
 </ul>
+
+<h3>Tickets Solved</h3>
+<table class="table table-hover">
+    <thead>
+        <th>Ticket ID</th>
+        <th>Summary</th>
+        <th>Date Created</th>
+        <th>Customer</th>
+    </thead>
+    <tfoot>
+        <th>Ticket ID</th>
+        <th>Summary</th>
+        <th>Date Created</th>
+        <th>Customer</th>
+    </tfoot>
+    <tbody>
+        {% for ticket in tickets_solved %}
+        <tr>
+            <td><a href="{{ ticket.get_absolute_url }}">{{ ticket.ticketid }}</a></td>
+            <td>{{ ticket.summary }}</td>
+            <td>{{ ticket.datecreated }}</td>
+            <td><a href="{{ ticket.customerid.get_absolute_url }}">{{ ticket.customerid.first_name }} {{ ticket.customerid.last_name }}</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if tickets_solved.has_previous %}
+        <a href="?page={{ tickets_solved.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ tickets_solved.number }} of {{ tickets_solved.paginator.num_pages }}.
+        </span>
+
+        {% if tickets_solved.has_next %}
+        <a href="?page={{ tickets_solved.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
 {% endblock %}
