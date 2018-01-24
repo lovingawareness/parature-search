@@ -41,7 +41,7 @@ DEBUG = True
 
 
 ALLOWED_HOSTS = ['*']
-INTERNAL_IPS = ('localhost', '127.0.0.1')
+INTERNAL_IPS = ('localhost', '127.0.0.1', '165.124.13.62')
 
 
 # Application definition

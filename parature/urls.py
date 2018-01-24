@@ -1,6 +1,7 @@
 from django.views.generic import RedirectView
 from django.conf.urls import url, include
 from . import views
+from logactivity.views import MySearchesList
 
 urlpatterns = [
     url(r'^$', RedirectView.as_view(url='search/')),
@@ -11,4 +12,5 @@ urlpatterns = [
     url(r'^comment/(?P<pk>\d+)/$', views.comment_detail, name='comment_detail'),
     url(r'^csrs/$', views.csr_list, name='csr_list'),
     url(r'^csr/(?P<csr>\D+)/$', views.csr_detail, name='csr_detail'),
+    url(r'^mysearches/$', MySearchesList.as_view(template_name='mysearches.html'), name='my_searches'),
 ]
