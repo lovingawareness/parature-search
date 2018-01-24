@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load jsonify %}
+
+{% block script %}
+{% endblock %}
+
+{% block content %}
+<h3>My History (Newest to Oldest, {{ record_list|length }} items)</h3>
+<table class="table">
+    <thead>
+        <th>#</th>
+        <th>Path</th>
+        <th>Date</th>
+        <th>User</th>
+        <th>IP Address</th>
+    </thead>
+    <tfoot>
+        <th>#</th>
+        <th>Path</th>
+        <th>Date</th>
+        <th>User</th>
+        <th>IP Address</th>
+    </tfoot>
+    <tbody>
+        {% for record in record_list %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td><a href="{{ record.path_full }}">{{ record.path_full }}</a></td>
+            <td>{{ record.created_at }}</td>
+            <td>{{ record.user }}</td>
+            <td>{{ record.user_address }}</td>
+            <div style="display: none">{{ record|jsonify }}</div>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

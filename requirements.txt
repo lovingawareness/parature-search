@@ -5,3 +5,4 @@ pytz==2017.3
 django-haystack==2.6.1
 Whoosh==2.7.4
 htmllaundry==2.1
+django-currentuser==0.2.2

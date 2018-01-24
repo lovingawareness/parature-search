@@ -1,12 +1,10 @@
 from django.shortcuts import render
 from django.views.generic import ListView
+from django_currentuser.middleware import get_current_authenticated_user
 from .models import Record
 
-class MySearchesList(ListView):
+class MyHistoryList(ListView):
     model = Record
 
-    def get_context_data(self, **kwargs):
-        context = super(MySearchesList, self).get_context_data(**kwargs)
-        self.queryset = Record.objects.filter(user=self.request.user)
-        self.context_object_name = 'my_searches'
-        return context
+    def get_queryset(self):
+        return Record.objects.filter(user=get_current_authenticated_user()).order_by('-created_at')
