@@ -2,6 +2,16 @@
 {% load jsonify %}
 {% load htmlify %}
 
+{% block script %}
+$(document).ready(function() {
+    // Start the page with the "N/A" rows in the ticket history hidden
+    $('tr.info').toggle();
+    $('button#toggle-na').click(function() {
+        $('tr.info').toggle();
+    });
+});
+{% endblock %}
+
 {% block content %}
     <div class="ticket">
             <h3>Customer: <a href="{{ ticket.customerid.get_absolute_url }}">{{ ticket.customerid.first_name }} {{ ticket.customerid.last_name }}</a></h3>
@@ -21,21 +31,36 @@
         </div>
         <div>
             <h3>Ticket Comments</h3>
-            <ol>
-        {% for history_item in ticket.tickethistory_set.all %}
-        <li>
-            <h4>{{ history_item.action_date }}: {{ history_item.action_name }} performed by <a href="{% url 'csr_detail' csr=history_item.performed_by_csr %}">{{ history_item.performed_by_csr }}</a> ({{ history_item.time_spent|floatformat:"-3" }} hours spent)</h4>
-            {% if history_item.comments %}
-            <h4>Comments</h4>
-            <div class="ticket_textfield">{{ history_item.comments|htmlify|safe }}</div>
-            {% endif %}
-            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#comment{{ forloop.counter }}">Toggle Details</button>
-            <div id="comment{{ forloop.counter }}" class="collapse">
-                <pre>{{ history_item|jsonify }}</pre>
+            <div>
+                <button type="button" class="btn btn-info" id="toggle-na">Toggle actions from N/A</button>
             </div>
-        </li>
-        {% endfor %}
-            </ol>
+            <table class="table table-hover table-condensed table-bordered">
+                <thead>
+                    <th>Action Date</th>
+                    <th>Action Type</th>
+                    <th>CSR</th>
+                    <th>Time Spent (hrs)</th>
+                    <th>Comments</th>
+                </thead>
+                <tfoot>
+                    <th>Action Date</th>
+                    <th>Action Type</th>
+                    <th>CSR</th>
+                    <th>Time Spent (hrs)</th>
+                    <th>Comments</th>
+                </tfoot>
+                <tbody>
+                    {% for history_item in ticket.tickethistory_set.all %}
+                    <tr{% if history_item.performed_by_csr == "N/A" %} class="info"{% endif %}>
+                        <td>{{ history_item.action_date }}</td>
+                        <td>{{ history_item.action_name }}</td>
+                        <td><a href="{% url 'csr_detail' csr=history_item.performed_by_csr %}">{{ history_item.performed_by_csr }}</a></td>
+                        <td>{{ history_item.time_spent|floatformat:"-3" }}</td>
+                        <td>{{ history_item.comments|htmlify|safe }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 {% endblock %}
