@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from .models import Customer, TicketDetails, TicketHistory
+from . import search
 
 def ticket_detail(request, pk):
     ticket = get_object_or_404(TicketDetails, pk=pk)
@@ -20,21 +21,15 @@ def comment_detail(request, pk):
     return render(request, 'parature/comment_detail.html', {'comment': comment})
 
 def customer_search(request):
-    query_filters = []
-    queries = {'Name': '', 'NetID': '', 'Email': ''}
-    if request.GET.get('q_netid'):
-        queries['NetID'] = request.GET.get('q_netid')
-        query_filters.append(Q(netid__icontains=queries['NetID']))
-    if request.GET.get('q_name'):
-        queries['Name'] = request.GET.get('q_name')
-        query_filters.append(Q(first_name__icontains=queries['Name']) or Q(last_name__icontains=queries['Name']))
-    if request.GET.get('q_email'):
-        queries['Email'] = request.GET.get('q_email')
-        query_filters.append(Q(email__icontains=queries['Email']))
-    if len(query_filters) > 0:
-        customers = Customer.objects.filter(reduce(operator.and_, query_filters)).distinct().order_by('netid')
-        query_string = ', '.join((k + ':' + v for k,v in queries.items()))
-        return render(request, 'parature/customer_search.html', {'customers': customers, 'query_string': query_string, 'queries': queries})
+    if request.GET.get('q'):
+        query = request.GET['q']
+        # The search expects lowercase strings
+        search_hits = search.customer_search(query.lower())
+        customers = []
+        for hit in search_hits:
+            customers.append(Customer.objects.get(id=int(hit.meta.id)))
+        customers = sorted(customers, key=lambda c: c.netid)
+        return render(request, 'parature/customer_search.html', {'customers': customers, 'q': query})
     else:
         return render(request, 'parature/customer_search.html')
 

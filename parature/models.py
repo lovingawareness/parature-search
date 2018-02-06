@@ -9,6 +9,8 @@ from __future__ import unicode_literals
 
 from django.db import models
 
+from .search import CustomerIndex
+
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=80)
@@ -121,6 +123,18 @@ class Customer(models.Model):
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name + ' <' + self.email + '>'
+
+    def indexing(self):
+        print("Customer.indexing: Creating index object for " + str(self.id))
+        obj = CustomerIndex(
+            meta = {'id': self.id},
+            text = ' '.join([self.email, self.first_name, self.last_name, self.netid, self.department])
+        )
+        obj.save()
+        print("Customer.indexing: Saving index for " + str(self.id))
+        print("Customer.indexing: Returning dict of index object.")
+        return obj.to_dict(include_meta=True)
+
 
 
 class DjangoAdminLog(models.Model):

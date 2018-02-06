@@ -4,8 +4,6 @@ from . import views
 from logactivity.views import MyHistoryList
 
 urlpatterns = [
-    url(r'^$', RedirectView.as_view(url='search/')),
-    url(r'^search/', include('haystack.urls'), name='ticket_search'),
     url(r'^search/customers/', views.customer_search, name='customer_search'),
     url(r'^ticket/(?P<pk>\d+)/$', views.ticket_detail, name='ticket_detail'),
     url(r'^customer/(?P<pk>\d+)/$', views.customer_detail, name='customer_detail'),
