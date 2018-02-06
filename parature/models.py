@@ -6,10 +6,22 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from __future__ import unicode_literals
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+# create console handler which logs even debug messages
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+# create formatter and add it to the handler
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+# add the handler to logger
+logger.addHandler(ch)
 
 from django.db import models
 
-from .search import CustomerIndex
+from .search import CustomerIndex, TicketIndex
 
 
 class AuthGroup(models.Model):
@@ -125,14 +137,14 @@ class Customer(models.Model):
         return self.first_name + ' ' + self.last_name + ' <' + self.email + '>'
 
     def indexing(self):
-        print("Customer.indexing: Creating index object for " + str(self.id))
+        logger.info("Customer.indexing: Creating index object for " + str(self.id))
         obj = CustomerIndex(
             meta = {'id': self.id},
             text = ' '.join([self.email, self.first_name, self.last_name, self.netid, self.department])
         )
         obj.save()
-        print("Customer.indexing: Saving index for " + str(self.id))
-        print("Customer.indexing: Returning dict of index object.")
+        logger.info("Customer.indexing: Saving index for " + str(self.id))
+        logger.info("Customer.indexing: Returning dict of index object.")
         return obj.to_dict(include_meta=True)
 
 
@@ -240,6 +252,20 @@ class TicketDetails(models.Model):
     def __str__(self):
         return 'Ticket ID ' + str(self.ticketid)
 
+    def indexing(self):
+        logger.info("TicketDetails.indexing: Gathering all text from ticket " + str(self.id) + " and all related history objects.")
+        all_comments = ' '.join((comment.comments for comment in self.tickethistory_set.all()))
+        logger.info("TicketDetails.indexing: Creating all_text string.")
+        all_text = ' '.join((self.summary, self.details, self.known_error_notes_and_workaround, all_comments))
+        logger.info("TicketDetails.indexing: Creating index object for " + str(self.id))
+        obj = TicketIndex(
+            meta = {'id': self.id},
+            text = all_text
+        )
+        logger.info("Customer.indexing: Saving index for " + str(self.id))
+        obj.save()
+        logger.info("Customer.indexing: Returning dict of index object.")
+        return obj.to_dict(include_meta=True)
 
 class TicketHistory(models.Model):
     action_date = models.DateTimeField(blank=True, null=True)

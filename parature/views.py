@@ -1,4 +1,5 @@
 from functools import reduce
+import logging
 import operator
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404
@@ -6,6 +7,9 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from .models import Customer, TicketDetails, TicketHistory
 from . import search
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 def ticket_detail(request, pk):
     ticket = get_object_or_404(TicketDetails, pk=pk)
@@ -23,8 +27,7 @@ def comment_detail(request, pk):
 def customer_search(request):
     if request.GET.get('q'):
         query = request.GET['q']
-        # The search expects lowercase strings
-        search_hits = search.customer_search(query.lower())
+        search_hits = search.customer_search(query)
         customers = []
         for hit in search_hits:
             customers.append(Customer.objects.get(id=int(hit.meta.id)))
@@ -32,6 +35,18 @@ def customer_search(request):
         return render(request, 'parature/customer_search.html', {'customers': customers, 'q': query})
     else:
         return render(request, 'parature/customer_search.html')
+
+def ticket_search(request):
+    if request.GET.get('q'):
+        query = request.GET['q']
+        search_hits = search.ticket_search(query)
+        tickets = []
+        for hit in search_hits:
+            tickets.append(TicketDetails.objects.get(id=int(hit.meta.id)))
+        tickets = sorted(tickets, key=lambda t: t.id)
+        return render(request, 'parature/ticket_search.html', {'tickets': tickets, 'q': query})
+    else:
+        return render(request, 'parature/ticket_search.html')
 
 def csr_list(request):
     csrs = sorted(TicketHistory.objects.values_list('performed_by_csr', flat=True).distinct())
