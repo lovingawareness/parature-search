@@ -43,7 +43,7 @@ def ticket_search(request):
         tickets = []
         for hit in search_hits:
             tickets.append(TicketDetails.objects.get(id=int(hit.meta.id)))
-        tickets = sorted(tickets, key=lambda t: t.id)
+        tickets = sorted(tickets, key=lambda t: t.id, reverse=True)
         return render(request, 'parature/ticket_search.html', {'tickets': tickets, 'q': query})
     else:
         return render(request, 'parature/ticket_search.html')

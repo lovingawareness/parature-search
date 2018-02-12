@@ -137,14 +137,14 @@ class Customer(models.Model):
         return self.first_name + ' ' + self.last_name + ' <' + self.email + '>'
 
     def indexing(self):
-        logger.info("Customer.indexing: Creating index object for " + str(self.id))
+        logger.debug("Customer.indexing: Creating index object for " + str(self.id))
         obj = CustomerIndex(
             meta = {'id': self.id},
             text = ' '.join([self.email, self.first_name, self.last_name, self.netid, self.department])
         )
         obj.save()
-        logger.info("Customer.indexing: Saving index for " + str(self.id))
-        logger.info("Customer.indexing: Returning dict of index object.")
+        logger.debug("Customer.indexing: Saving index for " + str(self.id))
+        logger.debug("Customer.indexing: Returning dict of index object.")
         return obj.to_dict(include_meta=True)
 
 
@@ -253,18 +253,18 @@ class TicketDetails(models.Model):
         return 'Ticket ID ' + str(self.ticketid)
 
     def indexing(self):
-        logger.info("TicketDetails.indexing: Gathering all text from ticket " + str(self.id) + " and all related history objects.")
+        logger.debug("TicketDetails.indexing: Gathering all text from ticket " + str(self.id) + " and all related history objects.")
         all_comments = ' '.join((comment.comments for comment in self.tickethistory_set.all()))
-        logger.info("TicketDetails.indexing: Creating all_text string.")
+        logger.debug("TicketDetails.indexing: Creating all_text string.")
         all_text = ' '.join((self.summary, self.details, self.known_error_notes_and_workaround, all_comments))
-        logger.info("TicketDetails.indexing: Creating index object for " + str(self.id))
+        logger.debug("TicketDetails.indexing: Creating index object for " + str(self.id))
         obj = TicketIndex(
             meta = {'id': self.id},
             text = all_text
         )
-        logger.info("Customer.indexing: Saving index for " + str(self.id))
+        logger.debug("TicketDetails.indexing: Saving index for " + str(self.id))
         obj.save()
-        logger.info("Customer.indexing: Returning dict of index object.")
+        logger.debug("TicketDetails.indexing: Returning dict of index object.")
         return obj.to_dict(include_meta=True)
 
 class TicketHistory(models.Model):
