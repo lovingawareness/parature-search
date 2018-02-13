@@ -6,3 +6,4 @@ htmllaundry==2.1
 django-currentuser==0.2.2
 elasticsearch==6.1.1
 elasticsearch-dsl==6.1.0
+tqdm==4.19.5
