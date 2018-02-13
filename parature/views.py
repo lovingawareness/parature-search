@@ -4,6 +4,7 @@ import operator
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import Customer, TicketDetails, TicketHistory
 from . import search
@@ -39,12 +40,11 @@ def customer_search(request):
 def ticket_search(request):
     if request.GET.get('q'):
         query = request.GET['q']
-        search_hits = search.ticket_search(query)
-        tickets = []
-        for hit in search_hits:
-            tickets.append(TicketDetails.objects.get(id=int(hit.meta.id)))
-        tickets = sorted(tickets, key=lambda t: t.id, reverse=True)
-        return render(request, 'parature/ticket_search.html', {'tickets': tickets, 'q': query})
+        result_limit = 200
+        search_results = search.ticket_search(query, result_limit)
+        if search_results['total_results'] > result_limit:
+            messages.warning(request, u'Found %d tickets but I\'m only going to display the first %d because otherwise the server crashes. ಠ_ಠ' % (search_results['total_results'], result_limit))
+        return render(request, 'parature/ticket_search.html', {'tickets': search_results['tickets'], 'q': query})
     else:
         return render(request, 'parature/ticket_search.html')
 

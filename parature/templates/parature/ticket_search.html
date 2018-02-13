@@ -21,6 +21,13 @@ $(document).ready(function() {
         </ul>
     </form>
     {% if q %}
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <p{% if message.tags %} class="bg-{{ message.tags }}"{% endif %}>{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
     <h1>{{ tickets|length }} tickets found matching '{{ q }}'</h1>
     <table id="tickets" class="table table-hover">
         <thead>
