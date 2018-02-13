@@ -1,5 +1,7 @@
+from functools import reduce
 import logging
 from elasticsearch_dsl.connections import connections
+from elasticsearch_dsl.query import Q
 from elasticsearch_dsl import DocType, Text, Date, Search
 from elasticsearch.helpers import bulk
 from elasticsearch import Elasticsearch
@@ -56,6 +58,9 @@ def bulk_tickets_indexing():
     bulk(client=es, actions=(t.indexing() for t in models.TicketDetails.objects.all().iterator()))
     logger.debug("Finished bulk index.")
 
+def query_object(query_string, filter_type):
+    return reduce(lambda q1, q2: q1 & q2, [Q(filter_type, text=chunk) for chunk in query_string.split(' ')])
+
 def customer_search(query_string):
     client = Elasticsearch()
     if '*' in query_string or '?' in query_string:
@@ -66,7 +71,7 @@ def customer_search(query_string):
         # Don't mess with people's capitalization
         filter_type = 'match'
 
-    s = Search(using=client, index='customer-index').filter(filter_type, text=query_string).scan()
+    s = Search(using=client, index='customer-index').query(query_object(query_string, filter_type)).scan()
     return s
 
 def ticket_search(query_string, result_limit=None):
@@ -78,8 +83,7 @@ def ticket_search(query_string, result_limit=None):
     else:
         # Don't mess with people's capitalization
         filter_type = 'match'
-
-    s = Search(using=client, index='ticket-index').filter(filter_type, text=query_string)
+    s = Search(using=client, index='ticket-index').query(query_object(query_string, filter_type))
     result = s.execute()
     results_count = result.hits.total
     if result_limit and results_count > result_limit:
