@@ -45,6 +45,11 @@ $(document).ready(function() {
                         <td>Date Updated</td>
                         <td>{{ ticket.dateupdated }}</td>
                     </tr>
+                    <tr>
+                        <td>Time To First Solve/Close</td>
+                        <!-- <td>{% if ticket.time_to_first_solution %}{{ ticket.time_to_first_solution }}{% else %}Ticket has not been solved or closed.{% endif %}</td> -->
+                        <td>{{ ticket.time_to_first_solution }}</td>
+                    </tr>
                 </tbody>
             </table>
             <div class="original-data">{{ ticket|jsonify }}</div>

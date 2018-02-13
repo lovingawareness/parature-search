@@ -252,6 +252,21 @@ class TicketDetails(models.Model):
     def __str__(self):
         return 'Ticket ID ' + str(self.ticketid)
 
+    @property
+    def time_to_first_solution(self):
+        date_opened = self.datecreated
+        first_solution = self.tickethistory_set.filter(action_name='Solve').order_by('action_date').first()
+        if first_solution:
+            date_first_solution = first_solution.action_date
+            return date_first_solution - date_opened
+        # There was no solution, let's check for manual solves
+        first_close = self.tickethistory_set.filter(action_name='Manually Close').order_by('action_date').first()
+        if first_close:
+            date_first_close = first_close.action_date
+            return date_first_close - date_opened
+        # If there was no solution or manual solve, then the ticket must still be open. Then let's return None.
+        return None
+
     def indexing(self):
         logger.debug("TicketDetails.indexing: Gathering all text from ticket " + str(self.id) + " and all related history objects.")
         all_comments = ' '.join((comment.comments for comment in self.tickethistory_set.all()))
