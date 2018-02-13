@@ -55,3 +55,7 @@ echo Processing ticket_details data file.
 python sanitize_csv_fieldnames.py $COMPILED_FOLDER/ticket_details_$DATESTRING-noBOM-trimmed.csv $COMPILED_FOLDER/ticket_details_$DATESTRING-noBOM-trimmed-sanitized.csv
 echo Processing ticket_history data file.
 python sanitize_csv_fieldnames.py $COMPILED_FOLDER/ticket_history_$DATESTRING-noBOM.csv $COMPILED_FOLDER/ticket_history_$DATESTRING-noBOM-sanitized.csv
+echo Creating new columns in ticket_details data file with HTML stripped out.
+python strip_comment_html_to_new_columns.py $COMPILED_FOLDER/ticket_details_$DATESTRING-noBOM-trimmed-sanitized.csv $COMPILED/ticket_details_$DATESTRING-noBOM-trimmed-sanitized-nohtml.csv
+echo Creating new columns in ticket_history data file with HTML stripped out.
+python strip_comment_html_to_new_columns.py $COMPILED_FOLDER/ticket_history_$DATESTRING-noBOM-trimmed-sanitized.csv $COMPILED/ticket_history_$DATESTRING-noBOM-sanitized-nohtml.csv
