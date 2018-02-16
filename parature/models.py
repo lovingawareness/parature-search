@@ -133,6 +133,10 @@ class Customer(models.Model):
         from django.urls import reverse
         return reverse('customer_detail', args=[str(self.id)])
 
+    @property
+    def total_time_consumed(self):
+        return sum(float(ticket.hoursspent) for ticket in self.ticketdetails_set.all())
+
     def __str__(self):
         return self.first_name + ' ' + self.last_name + ' <' + self.email + '>'
 

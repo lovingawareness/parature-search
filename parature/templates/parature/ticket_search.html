@@ -1,13 +1,6 @@
 {% extends 'base.html' %}
 
 {% block script %}
-$(document).ready(function() {
-    $('table.results').DataTable({
-        "paging": false,
-        "info": false,
-        "searching": false
-    });
-});
 {% endblock %}
 
 {% block content %}
@@ -24,7 +17,7 @@ $(document).ready(function() {
     {% if messages %}
     <div class="messages">
         {% for message in messages %}
-        <p{% if message.tags %} class="bg-{{ message.tags }}"{% endif %}>{{ message }}</p>
+        <h4{% if message.tags %} class="bg-{{ message.tags }}"{% endif %}>{{ message }}</h4>
         {% endfor %}
     </div>
     {% endif %}
@@ -36,6 +29,7 @@ $(document).ready(function() {
                 <th>Summary</th>
                 <th>Date Created</th>
                 <th>Customer</th>
+                <th>Hours Spent</th>
             </tr>
         </thead>
         <tfoot>
@@ -44,6 +38,7 @@ $(document).ready(function() {
                 <th>Summary</th>
                 <th>Date Created</th>
                 <th>Customer</th>
+                <th>Hours Spent</th>
             </tr>
         </tfoot>
         <tbody>
@@ -53,6 +48,8 @@ $(document).ready(function() {
                 <td>{{ ticket.summary }}</td>
                 <td>{{ ticket.datecreated }}</td>
                 <td><a href="{{ ticket.customerid.get_absolute_url }}">{{ ticket.customerid.first_name }} {{ ticket.customerid.last_name }}</a></td>
+                <td>{{ ticket.hoursspent }}</td>
+                
             </tr>
             {% endfor %}
         </tbody>

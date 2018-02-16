@@ -7,7 +7,7 @@
 {% block content %}
     <div class="customer">
         <h3>Customer Details</h3>
-        <table class="table table-condensed table-hover table-bordered">
+        <table id="customer_details" class="table table-condensed table-hover table-bordered">
             <tbody>
                 <tr>
                     <td>Name</td>
@@ -28,6 +28,10 @@
                 <tr>
                     <td>Department</td>
                     <td>{{ customer.department }}</td>
+                </tr>
+                <tr>
+                    <td>Total KIS Time Consumed (hours)</td>
+                    <td>{{ customer.total_time_consumed }}</td>
                 </tr>
             </tbody>
         </table>
@@ -75,7 +79,7 @@
                 // append the svg object to this div
                 // append a 'group' element to the 'svg'
                 // moves the 'group' element to the top left margin
-                var title = d3.select('div#ticket_histogram').append('h3').text('Histogram of Ticket Submissions')
+                var title = d3.select('div#ticket_histogram').append('h3').text('# Tickets submitted per month since 1/1/2008')
                 var svg = d3.select('div#ticket_histogram').append('svg')
                         .attr("width", width + margin.left + margin.right)
                         .attr("height", height + margin.top + margin.bottom)
@@ -121,6 +125,7 @@
                     <th>Created</th>
                     <th>Summary</th>
                     <th>Assigned To</th>
+                    <th>Hours Spent</th>
                 </tr>
             </thead>
             <tfoot>
@@ -130,6 +135,7 @@
                     <th>Created</th>
                     <th>Summary</th>
                     <th>Assigned To</th>
+                    <th>Hours Spent</th>
                 </tr>
             </tfoot>
             <tbody>
@@ -140,6 +146,8 @@
                     <td>{{ ticket.datecreated }}</td>
                     <td><a href="{% url 'ticket_detail' pk=ticket.pk %}">{{ ticket.summary }}</a></td>
                     <td><a href="{% url 'csr_detail' csr=ticket.assignedto %}">{{ ticket.assignedto }}</a></td>
+                    <td>{{ ticket.hoursspent }}</td>
+                    
                 </tr>
                 {% endfor %}
             </tbody>

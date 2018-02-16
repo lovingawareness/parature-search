@@ -9,6 +9,12 @@ $(document).ready(function() {
     $('button#toggle-info').click(function() {
         $('tr.info').toggle();
     });
+    $('#comments').DataTable({
+        "paging": false,
+        "info": false,
+        "searching": false,
+        "order": []
+    });
 });
 {% endblock %}
 
@@ -50,6 +56,11 @@ $(document).ready(function() {
                         <!-- <td>{% if ticket.time_to_first_solution %}{{ ticket.time_to_first_solution }}{% else %}Ticket has not been solved or closed.{% endif %}</td> -->
                         <td>{{ ticket.time_to_first_solution }}</td>
                     </tr>
+                    <tr>
+                        <td>Hours Spent</td>
+                        <td>{{ ticket.hoursspent }}</td>
+                    </tr>
+                    
                 </tbody>
             </table>
             <div class="original-data">{{ ticket|jsonify }}</div>
@@ -59,7 +70,7 @@ $(document).ready(function() {
             <div>
                 <button type="button" class="btn btn-info" id="toggle-info">Toggle system events</button>
             </div>
-            <table class="table table-hover table-condensed table-bordered">
+            <table id="comments" class="table table-hover table-condensed table-bordered">
                 <thead>
                     <th>Action Date</th>
                     <th>Action Type</th>
