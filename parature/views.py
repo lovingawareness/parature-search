@@ -18,8 +18,14 @@ def ticket_detail(request, pk):
 
 def customer_detail(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
-    tickets = customer.ticketdetails_set.all().order_by('-id')
-    return render(request, 'parature/customer_detail.html', {'customer': customer, 'tickets': tickets})
+    if request.GET.get('q'):
+        query = request.GET['q']
+        search_results = search.ticket_search(query, customer_id=pk)
+        tickets = search_results['tickets']
+        return render(request, 'parature/customer_detail.html', {'customer': customer, 'tickets': tickets, 'q': query})
+    else:
+        tickets = customer.ticketdetails_set.all().order_by('-id')
+        return render(request, 'parature/customer_detail.html', {'customer': customer, 'tickets': tickets})
 
 def comment_detail(request, pk):
     comment = get_object_or_404(TicketHistory, pk=pk)

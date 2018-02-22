@@ -74,7 +74,7 @@ def customer_search(query_string):
     s = Search(using=client, index='customer-index').query(query_object(query_string, filter_type)).scan()
     return s
 
-def ticket_search(query_string, result_limit=None):
+def ticket_search(query_string, customer_id=None, result_limit=None):
     client = Elasticsearch()
     if '*' in query_string or '?' in query_string:
         filter_type = 'wildcard'
@@ -92,4 +92,7 @@ def ticket_search(query_string, result_limit=None):
         hits = list(s.scan())
     ticket_ids = [int(hit.meta.id) for hit in hits]
     tickets = models.TicketDetails.objects.filter(id__in=ticket_ids).order_by('-id')
+    # This is a highly inefficient way to do this, but it works in most cases and is eaiser for me to implement right now
+    if customer_id:
+        tickets = tickets.filter(customerid_id=customer_id)
     return {'tickets': tickets, 'total_results': results_count}
