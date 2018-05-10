@@ -107,5 +107,5 @@ secret.txt
 # vim swap files
 *.swp
 
-# Whoosh search index
-whoosh_index/
+# Data files
+*.csv
