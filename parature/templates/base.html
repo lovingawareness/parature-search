@@ -25,13 +25,18 @@
                     <a class="navbar-brand" href="/">Parature History Search</a>
                 </div>
                 <ul class="nav navbar-nav">
-                    <li><a href="/search">Search Tickets</a></li>
+                    <li><a href="{% url 'ticket_search' %}">Search Tickets</a></li>
                     <li><a href="{% url 'customer_search' %}">Search Customers</a></li>
                     <li><a href="{% url 'csr_list' %}">List CSRs</a></li>
-                    <li><a href="{% url 'my_history' %}">My History</a></li>
-                    <li><a href="/admin/">Admin</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'my_history' %}">My ({{ user.username }}) History</a></li>
+                    <li><a href="/logout/">Log Out</a></li>
+                    {% endif %}
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_staff %}
+                    <li><a href="/admin/">Admin</a></li>
+                    {% endif %}
                     <li><a href="https://github.com/tothebeat/parature-search" target="_blank"><i class="fa fa-github-alt fa-2x" aria-hidden="true"></i>
                         </a></li>
                 </ul>
