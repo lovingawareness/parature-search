@@ -16,8 +16,8 @@
         </p>
     </form>
     {% if query %}
-    <h1>The results from your search query of '{{ query }}' ({{ tickets|length }} tickets matched):</h1>
-    <table id="tickets" class="results">
+    <h1>The results from your search query of '{{ query }}' ({{ tickets|length }} tickets matched, newest first):</h1>
+    <table id="tickets" class="table table-condensed table-hover table-bordered">
         <thead>
             <tr>
                 <th>ID</th>
