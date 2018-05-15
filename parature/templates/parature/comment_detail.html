@@ -4,7 +4,7 @@
     <div class="comment">
         <h3>Comment Details</h3>
         <ul>
-            <li>Ticket ID: <a href="https://s3.parature.com/link/desk/5525/5563/Ticket/{{ comment.ticket_id }}" target="_blank">Parature Ticket Link - {{ comment.ticket_id }} (opens in new tab)</a></li>
+            <li>Ticket ID: {{ comment.ticket_id }}</li>
             <li>Action Date: {{ comment.action_date }}</li>
             <li>Action Name: {{ comment.action_name }}</li>
             <li>Assigned to CSR: <a href="{% url 'csr_detail' csr=comment.assigned_to_csr %}">{{ comment.assigned_to_csr }}</a></li>

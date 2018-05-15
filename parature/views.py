@@ -6,19 +6,23 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from .models import Customer, TicketDetails, TicketHistory
 
+@login_required
 def ticket_detail(request, pk):
     ticket = get_object_or_404(TicketDetails, pk=pk)
     return render(request, 'parature/ticket_detail.html', {'ticket': ticket})
 
+@login_required
 def customer_detail(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
     tickets = customer.ticketdetails_set.all().order_by('-id')
     return render(request, 'parature/customer_detail.html', {'customer': customer, 'tickets': tickets})
 
+@login_required
 def comment_detail(request, pk):
     comment = get_object_or_404(TicketHistory, pk=pk)
     return render(request, 'parature/comment_detail.html', {'comment': comment})
 
+@login_required
 def customer_search(request):
     query_filters = []
     queries = {'Name': '', 'NetID': '', 'Email': ''}
@@ -38,10 +42,12 @@ def customer_search(request):
     else:
         return render(request, 'parature/customer_search.html')
 
+@login_required
 def csr_list(request):
     csrs = sorted(TicketHistory.objects.values_list('performed_by_csr', flat=True).distinct())
     return render(request, 'parature/csr_list.html', {'csrs': csrs})
 
+@login_required
 def csr_detail(request, csr):
     Q_csr = Q(performed_by_csr__exact=csr)
     Q_csr_assigned = Q(assignedto__exact=csr)
@@ -72,3 +78,24 @@ def csr_detail(request, csr):
 
     return render(request, 'parature/csr.html', {'csr': csr, 'solved_count': solved_count, 'commented_count': commented_count, 'touched_count': touched_count, 'oldest_action': oldest_action, 'newest_action': newest_action, 'tickets_solved': tickets_solved, 'ticket_created_dates': ticket_created_dates})
 
+@login_required
+def ticket_search(request):
+    if 'q' in request.GET and request.GET['q']:
+        query = request.GET['q']
+        search_fields = {'ticket_details': request.GET.get('search_ticket_details') == 'on',
+                        'ticket_summary': request.GET.get('search_ticket_summary') == 'on',
+                        'ticket_solution': request.GET.get('search_ticket_solution') == 'on',
+                        'ticket_comments': request.GET.get('search_ticket_history') == 'on'}
+        query_filters = []
+        if search_fields['ticket_details']:
+            query_filters.append(Q(details__icontains=query))
+        if search_fields['ticket_summary']:
+            query_filters.append(Q(summary__icontains=query))
+        if search_fields['ticket_solution']:
+            query_filters.append(Q(solution__icontains=query))
+        if search_fields['ticket_comments']:
+            query_filters.append(Q(tickethistory__comments__icontains=query))
+        tickets = TicketDetails.objects.filter(reduce(operator.or_, query_filters)).distinct().order_by('-id')
+        return render(request, 'parature/ticket_search.html', {'tickets': tickets, 'query': query})
+    else:
+        return render(request, 'parature/ticket_search.html')

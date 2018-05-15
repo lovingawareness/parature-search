@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Ticket Search{% endblock %}
+
+{% block content %}
+    <h2>Ticket Search</h2>
+    <form action="." method="get" class="form-inline" id="search">
+        <p>
+            <input type="text" name="q"{% if query %} value="{{ query }}"{% endif %} placeholder="Search query" class="form-control" id="searchInput">
+            <button type="submit" class="btn btn-default">Search</button>
+        </p>
+        <p>
+            Include fields: 
+            <input id="search_ticket_details" name="search_ticket_details" type="checkbox" checked><label for="search_ticket_details">Ticket Details</label>
+            <input id="search_ticket_summary" name="search_ticket_summary" type="checkbox" checked><label for="search_ticket_summary">Ticket Summary</label>
+            <input id="search_ticket_solution" name="search_ticket_solution" type="checkbox" checked><label for="search_ticket_solution">Ticket Solution</label>
+            <input id="search_ticket_history" name="search_ticket_history" type="checkbox"><label for="search_ticket_history">Ticket History (Comments)</label>
+        </p>
+    </form>
+    {% if query %}
+    <h1>The results from your search query of '{{ query }}' ({{ tickets|length }} tickets matched, newest first):</h1>
+    <table id="tickets" class="table table-condensed table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Created</th>
+                <th>Summary</th>
+                <th>Customer</th>
+                <th>Assigned To</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>ID</th>
+                <th>Created</th>
+                <th>Summary</th>
+                <th>Customer</th>
+                <th>Assigned To</th>
+            </tr>
+        </tfoot>
+        <tbody>
+            {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket.ticketid }}</td>
+                <td>{{ ticket.datecreated }}</td>
+                <td><a href="{% url 'ticket_detail' pk=ticket.pk %}">{{ ticket.summary }}</a></td>
+                <td><a href="{% url 'customer_detail' pk=ticket.customerid.pk %}">{{ ticket.customerid.first_name }} {{ticket.customerid.last_name }}</a></td>
+                <td>{{ ticket.assignedto }}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+{% endblock %}
+
