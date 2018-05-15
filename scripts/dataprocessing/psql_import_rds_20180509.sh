@@ -1,8 +1,6 @@
 #!/bin/bash -x
-# This is where all data folders reside
-ROOT_FOLDER=/data/Parature
 # This is where the $HISTORICAL_FOLDER and current data dumps are combined into single CSV files
-COMPILED_FOLDER=$ROOT_FOLDER/compiled
+COMPILED_FOLDER=/home/ubuntu/parature_search/data
 # This is the date string found in the current data dump
 DATESTRING=20180509
 # Insert these files into the PostgreSQL database, into the import schema
