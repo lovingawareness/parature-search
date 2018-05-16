@@ -1,7 +1,7 @@
 from functools import reduce
 import operator
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from .models import Customer, TicketDetails, TicketHistory
@@ -97,5 +97,11 @@ def ticket_search(request):
             query_filters.append(Q(tickethistory__comments__icontains=query))
         tickets = TicketDetails.objects.filter(reduce(operator.or_, query_filters)).distinct().order_by('-id')
         return render(request, 'parature/ticket_search.html', {'tickets': tickets, 'query': query})
+    elif 'ticket_id' in request.GET and request.GET['ticket_id']:
+        ticket_id = request.GET['ticket_id']
+        if ticket_id.startswith('5525-'):
+            ticket_id = ticket_id[len('5525-'):]
+        # Redirect to the URL for the ticket with this parameter
+        return redirect('ticket_detail', pk=ticket_id)
     else:
         return render(request, 'parature/ticket_search.html')
