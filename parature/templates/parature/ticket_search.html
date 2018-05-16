@@ -17,6 +17,13 @@
             <input id="search_ticket_history" name="search_ticket_history" type="checkbox"><label for="search_ticket_history">Ticket History (Comments)</label>
         </p>
     </form>
+    <h3>Ticket Lookup by Ticket ID</h3>
+    <form action="." method="get" class="form-inline" id="ticket_id_lookup">
+        <p>
+            <input type="text" name="ticket_id" placeholder="5525-12345678 or 12345678" class="form-control" id="ticketIdInput">
+            <button type="submit" class="btn btn-default">Get Ticket</button>
+        </p>
+    </form>
     {% if query %}
     <h1>The results from your search query of '{{ query }}' ({{ tickets|length }} tickets matched, newest first):</h1>
     <table id="tickets" class="table table-condensed table-hover table-bordered">
