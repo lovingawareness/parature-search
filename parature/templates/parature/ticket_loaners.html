@@ -45,6 +45,8 @@
 
 {% block script %}
 $(document).ready(function() {
-    $('#tickets').DataTable();
+$('#tickets').DataTable({
+    order: [ [ 0, 'desc' ] ]
+});
     });
 {% endblock %}
