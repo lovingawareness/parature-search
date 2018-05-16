@@ -24,6 +24,10 @@ $(document).ready(function() {
                         <td>{{ ticket.status }}</td>
                     </tr>
                     <tr>
+                        <td>Created By</td>
+                        <td><a href="{% url 'csr_detail' csr=ticket.createdby %}">{{ ticket.createdby }}</a></td>
+                    </tr>
+                    <tr>
                         <td>Customer</td>
                         <td><a href="{{ ticket.customerid.get_absolute_url }}">{{ ticket.customerid.first_name }} {{ ticket.customerid.last_name }}</a></td>
                     </tr>
@@ -55,6 +59,12 @@ $(document).ready(function() {
                     <tr>
                         <td>Loaner Purpose</td>
                         <td>{{ ticket.loaner_purpose }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if ticket.ticket_product %}
+                    <tr>
+                        <td>Associated Product ID</td>
+                        <td>{{ ticket.ticket_product }}</td>
                     </tr>
                     {% endif %}
                     <tr>
