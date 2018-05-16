@@ -24,20 +24,20 @@
                 <div class="navbar-header">
                     <a class="navbar-brand" href="/">Parature History Search</a>
                 </div>
+                {% if user.is_authenticated %}
                 <ul class="nav navbar-nav">
                     <li><a href="{% url 'ticket_search' %}">Search Tickets</a></li>
                     <li><a href="{% url 'customer_search' %}">Search Customers</a></li>
                     <li><a href="{% url 'csr_list' %}">List CSRs</a></li>
-                    {% if user.is_authenticated %}
                     <li><a href="{% url 'my_history' %}">My ({{ user.username }}) History</a></li>
                     <li><a href="/logout/">Log Out</a></li>
-                    {% endif %}
                 </ul>
+                {% endif %}
+                {% if user.is_staff %}
                 <ul class="nav navbar-nav navbar-right">
-                    {% if user.is_staff %}
                     <li><a href="/admin/">Admin</a></li>
-                    {% endif %}
                 </ul>
+                {% endif %}
             </div>
         </nav>
         <div class="content">
