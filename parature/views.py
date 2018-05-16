@@ -105,3 +105,8 @@ def ticket_search(request):
         return redirect('ticket_detail', pk=ticket_id)
     else:
         return render(request, 'parature/ticket_search.html')
+
+@login_required
+def loaner_tickets(request):
+    tickets = TicketDetails.objects.filter(Q(service__exact="Loaner Computers & Accessories")).exclude(Q(status__exact="Closed")).order_by('-id')
+    return render(request, 'parature/ticket_loaners.html', {'tickets': tickets})
