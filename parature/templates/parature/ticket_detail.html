@@ -77,7 +77,7 @@ $(document).ready(function() {
                     </tr>
                     <tr>
                         <td>Details</td>
-                        <td>{{ ticket.details|safe }}</td>
+                        <td>{% autoescape off %}{{ ticket.details|text_to_html }}{% endautoescape %}</td>
                     </tr>
                     <tr>
                         <td>Solution</td>

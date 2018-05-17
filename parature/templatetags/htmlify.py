@@ -18,3 +18,7 @@ def htmlify(value):
     for k,v in replacements.items():
         value = value.replace(k, v)
     return sanitize(value, CommentCleaner)
+
+@register.filter
+def text_to_html(value):
+    return value.replace('\n\n', '\n').replace('\n', '<br/>')
