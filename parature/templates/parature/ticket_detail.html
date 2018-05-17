@@ -131,7 +131,7 @@ $(document).ready(function() {
                         <td>{{ h.action_name }}</td>
                         <td><a href="{% url 'csr_detail' csr=h.performed_by_csr %}">{{ h.performed_by_csr }}</a></td>
                         <td>{{ h.time_spent|floatformat:"-3" }}</td>
-                        <td>{{ h.comments|htmlify|safe }}</td>
+                        <td>{{ h.comments|htmlify|text_to_html|safe }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
