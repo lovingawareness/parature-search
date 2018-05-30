@@ -14,8 +14,18 @@ def ticket_detail(request, pk):
 @login_required
 def customer_detail(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
-    tickets = customer.ticketdetails_set.all().order_by('-id')
-    return render(request, 'parature/customer_detail.html', {'customer': customer, 'tickets': tickets})
+    if 'q' in request.GET and request.GET['q']:
+        query = request.GET['q']
+        # Hard-coding the ticket search to only search details, summary, and solution. Comments sometimes crashes it, not an indexed column.
+        search_fields = {'ticket_details': True,
+                        'ticket_summary': True,
+                        'ticket_solution': True,
+                        'ticket_comments': False}
+        tickets = __ticket_search(query, search_fields, customer)
+        return render(request, 'parature/customer_detail.html', {'customer': customer, 'tickets': tickets, 'query': query})
+    else:
+        tickets = customer.ticketdetails_set.all().order_by('-id')
+        return render(request, 'parature/customer_detail.html', {'customer': customer, 'tickets': tickets})
 
 @login_required
 def comment_detail(request, pk):
@@ -78,6 +88,26 @@ def csr_detail(request, csr):
 
     return render(request, 'parature/csr.html', {'csr': csr, 'solved_count': solved_count, 'commented_count': commented_count, 'touched_count': touched_count, 'oldest_action': oldest_action, 'newest_action': newest_action, 'tickets_solved': tickets_solved, 'ticket_created_dates': ticket_created_dates})
 
+def __ticket_search(query, search_fields=None, customer=None):
+    if search_fields:
+        query_filters = []
+        if search_fields.get('ticket_details'):
+            query_filters.append(Q(details__icontains=query))
+        if search_fields.get('ticket_summary'):
+            query_filters.append(Q(summary__icontains=query))
+        if search_fields.get('ticket_solution'):
+            query_filters.append(Q(solution__icontains=query))
+        if search_fields.get('ticket_comments'):
+            query_filters.append(Q(tickethistory__comments__icontains=query))
+        # Will not be looking for a specific customer unless a search is being invoked too
+        if customer:
+            tickets = customer.ticketdetails_set.filter(reduce(operator.or_, query_filters)).distinct().order_by('-id')
+        else:
+            tickets = TicketDetails.objects.filter(reduce(operator.or_, query_filters)).distinct().order_by('-id')
+    else:
+        tickets = []
+    return tickets
+
 @login_required
 def ticket_search(request):
     if 'q' in request.GET and request.GET['q']:
@@ -86,16 +116,7 @@ def ticket_search(request):
                         'ticket_summary': request.GET.get('search_ticket_summary') == 'on',
                         'ticket_solution': request.GET.get('search_ticket_solution') == 'on',
                         'ticket_comments': request.GET.get('search_ticket_history') == 'on'}
-        query_filters = []
-        if search_fields['ticket_details']:
-            query_filters.append(Q(details__icontains=query))
-        if search_fields['ticket_summary']:
-            query_filters.append(Q(summary__icontains=query))
-        if search_fields['ticket_solution']:
-            query_filters.append(Q(solution__icontains=query))
-        if search_fields['ticket_comments']:
-            query_filters.append(Q(tickethistory__comments__icontains=query))
-        tickets = TicketDetails.objects.filter(reduce(operator.or_, query_filters)).distinct().order_by('-id')
+        tickets = __ticket_search(query, search_fields)
         return render(request, 'parature/ticket_search.html', {'tickets': tickets, 'query': query})
     elif 'ticket_id' in request.GET and request.GET['ticket_id']:
         ticket_id = request.GET['ticket_id']
