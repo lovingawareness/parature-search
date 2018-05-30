@@ -161,6 +161,13 @@
                         .call(d3.axisLeft(y))
             </script>
         </div>
+        <form action="." method="get" class="form-inline" id="search">
+            <p>
+                <label for="searchInput">Search Tickets:&nbsp;</label>
+                <input type="text" name="q"{% if query %} value="{{ query }}"{% endif %} placeholder="Search query" class="form-control" id="searchInput">
+                <button type="submit" class="btn btn-default">Search</button>
+            </p>
+        </form>
         <h3>Tickets ({{ tickets|length }})</h3>
         <table id="tickets" class="table table-condensed table-hover table-bordered">
             <thead>
