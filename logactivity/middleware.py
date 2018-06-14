@@ -13,6 +13,11 @@ class LogAllMiddleware(object):
             response = self.get_response(request)
             return response
 
+        if request.path.startswith('/apple'):
+            # We don't care about the favicons
+            response = self.get_response(request)
+            return response
+
         user = get_user(request)
         if type(user) == AnonymousUser:
             user = None

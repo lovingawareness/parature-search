@@ -3,7 +3,7 @@ from .models import Record
 
 class RecordAdmin(admin.ModelAdmin):
     readonly_fields = ('path', 'query_string', 'user', 'user_address')
-    list_filter = ['created_at', 'user', 'user_address']
+    list_filter = ['path', 'created_at', 'user', 'user_address']
     list_display = ('path_full', 'user', 'user_address', 'created_at')
 
     def view_on_site(self, obj):
