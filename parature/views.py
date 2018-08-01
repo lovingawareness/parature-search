@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from .models import Customer, TicketDetails, TicketHistory
+from re import match as re_match
 
 @login_required
 def ticket_detail(request, pk):
@@ -120,6 +121,12 @@ def ticket_search(request):
         return render(request, 'parature/ticket_search.html', {'tickets': tickets, 'query': query})
     elif 'ticket_id' in request.GET and request.GET['ticket_id']:
         ticket_id = request.GET['ticket_id']
+        # Fixing issue #34, need to remove spaces in beginning or end of ticket_id string
+        ticket_id = ticket_id.strip()
+        # Fixing issue #35, need to handle ticket_id entries that are not valid ticket IDs
+        if not re_match(r'^(?:\d{8}|5525-\d{8})$', ticket_id):
+            # invalid ticket_id
+            return render(request, 'parature/ticket_search.html')
         if ticket_id.startswith('5525-'):
             ticket_id = ticket_id[len('5525-'):]
         # Redirect to the URL for the ticket with this parameter
